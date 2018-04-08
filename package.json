@@ -4,5 +4,8 @@
   "main": "index.js",
   "repository": "https://github.com/jaxony/chessm8.git",
   "author": "Jackson Huang <jackson_huang@live.com>",
-  "license": ""
+  "license": "",
+  "dependencies": {
+    "stockfish": "^8.0.0"
+  }
 }
