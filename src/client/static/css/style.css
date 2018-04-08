@@ -1,6 +1,24 @@
 html {
   font-family: "Ubuntu", Helvetica;
-  color: #4c4c4c;
+  color: white;
+  height: 100%;
+  width: 100%;
+  background: rgb(26, 188, 156);
+  background: -moz-linear-gradient(
+    -45deg,
+    rgba(26, 188, 156, 1) 0%,
+    rgba(142, 68, 173, 1) 100%
+  );
+  background: -webkit-linear-gradient(
+    -45deg,
+    rgba(26, 188, 156, 1) 0%,
+    rgba(142, 68, 173, 1) 100%
+  );
+  background: linear-gradient(
+    135deg,
+    rgba(26, 188, 156, 1) 0%,
+    rgba(142, 68, 173, 1) 100%
+  );
 }
 
 .container {
