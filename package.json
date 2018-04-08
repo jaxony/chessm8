@@ -2,10 +2,22 @@
   "name": "chessm8",
   "version": "1.0.0",
   "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server:dev": "nodemon ./src/server/server.js",
+    "client:dev": "cd src/client && webpack --watch",
+    "start": "node ./src/server/server.js"
+  },
   "repository": "https://github.com/jaxony/chessm8.git",
   "author": "Jackson Huang <jackson_huang@live.com>",
   "license": "",
   "dependencies": {
+    "chess.js": "^0.10.2",
+    "express": "^4.16.3",
     "stockfish": "^8.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3",
+    "webpack": "^4.5.0"
   }
 }
