@@ -41,6 +41,10 @@ function Main() {
 
   this.logic = new Logic();
   this.model = new Model();
+  this.logic.isReadyCommand().then(function() {
+    console.log("after is ready");
+  });
+  console.log("immediate");
 }
 
 var main = new Main();

@@ -14,7 +14,10 @@
   "dependencies": {
     "chess.js": "^0.10.2",
     "express": "^4.16.3",
-    "stockfish": "^8.0.0"
+    "is-running": "^2.1.0",
+    "q": "^1.5.1",
+    "stockfish": "^8.0.0",
+    "string": "^3.3.3"
   },
   "devDependencies": {
     "chai": "^4.1.2",
