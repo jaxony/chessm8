@@ -46,6 +46,7 @@
 }
 
 .shade {
+  z-index: 997;
   position: absolute;
   opacity: 0.5;
   cursor: move; /* fallback if grab cursor is unsupported */
@@ -139,4 +140,5 @@
 
 .piece-417db {
   position: absolute;
+  z-index: 998;
 }

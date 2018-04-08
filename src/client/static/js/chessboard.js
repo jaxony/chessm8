@@ -920,7 +920,7 @@
         className +
         '" ' +
         'style="width:' +
-        (squareSize + 1) +
+        squareSize +
         "px;height:" +
         (squareSize + 1) +
         'px;" ' +
