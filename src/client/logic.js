@@ -3,6 +3,7 @@
  */
 
 var Chess = require("chess.js");
+var utils = require("./utils.js");
 
 var Logic = function Logic() {
   this.game = new Chess();
