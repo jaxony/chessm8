@@ -2,11 +2,12 @@
  * Entry point of the application.
  */
 var path = require("path");
-var Chess = require("chess.js");
+var Model = require("./model.js");
+var Logic = require("./logic.js");
 require("./static/js/chessboard");
 
 function onDrop(source, target, piece, newPos, oldPos, orientation) {
-  setTimeout(main.gameBoard.position, 250, oldPos);
+  setTimeout(main.board.position, 250, oldPos);
 }
 
 /**
@@ -28,19 +29,18 @@ function createBoard() {
 }
 
 /**
- * Creates logic of chess game.
+ * Creates model for the app. Contains state.
  */
-function createLogic() {
-  return new Chess();
-}
 
 /**
  * Constructs the Main app that contains UI, Logic, etc.
  */
 function Main() {
-  this.gameBoard = createBoard();
-  this.gameLogic = createLogic();
-  this.gameBoard.setAddGhost(true);
+  this.board = createBoard();
+  this.board.setAddGhost(true);
+
+  this.logic = new Logic();
+  this.model = new Model();
 }
 
 var main = new Main();
