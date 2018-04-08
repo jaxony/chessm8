@@ -10,7 +10,7 @@
   },
   "repository": "https://github.com/jaxony/chessm8.git",
   "author": "Jackson Huang <jackson_huang@live.com>",
-  "license": "",
+  "license": "UNLICENSED",
   "dependencies": {
     "chess.js": "^0.10.2",
     "express": "^4.16.3",
