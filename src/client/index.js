@@ -4,7 +4,7 @@
 var path = require("path");
 var Model = require("./model.js");
 var Logic = require("./logic.js");
-require("./static/js/chessboard");
+require("./chessboard");
 
 function onDrop(source, target, piece, newPos, oldPos, orientation) {
   setTimeout(main.board.position, 250, oldPos);
