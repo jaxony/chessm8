@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "server:dev": "nodemon ./src/server/server.js",
     "client:dev": "cd src/client && webpack --mode development --watch",
     "start": "node ./src/server/server.js"
