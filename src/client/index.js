@@ -37,10 +37,10 @@ function createLogic() {
 /**
  * Constructs the Main app that contains UI, Logic, etc.
  */
-var Main = function Main() {
+function Main() {
   this.gameBoard = createBoard();
   this.gameLogic = createLogic();
   this.gameBoard.setAddGhost(true);
-};
+}
 
 var main = new Main();
