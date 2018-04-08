@@ -920,9 +920,9 @@
         className +
         '" ' +
         'style="width:' +
-        squareSize +
+        (squareSize + 1) +
         "px;height:" +
-        squareSize +
+        (squareSize + 1) +
         'px;" ' +
         'id="shade-' +
         squareElsIds[square] +
