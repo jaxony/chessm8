@@ -1,0 +1,142 @@
+/*!
+ * chessboard.js $version$
+ *
+ * Copyright 2013 Chris Oakman
+ * Released under the MIT license
+ * https://github.com/oakmac/chessboardjs/blob/master/LICENSE
+ *
+ * Date: $date$
+ */
+
+.clearfix-7da63 {
+  clear: both;
+}
+
+.board-b72b1 {
+  border: 2px solid #404040;
+  box-sizing: content-box;
+}
+
+.square-55d63 {
+  float: left;
+  position: relative;
+
+  /* disable any native browser highlighting */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.white-1e1d7 {
+  background-color: #f0d9b5;
+  color: #b58863;
+}
+
+.black-3c85d {
+  background-color: #b58863;
+  color: #f0d9b5;
+}
+
+.highlight1-32417,
+.highlight2-9c5d2 {
+  box-shadow: inset 0 0 3px 3px yellow;
+}
+
+.shade {
+  position: absolute;
+  opacity: 0.5;
+  cursor: move; /* fallback if grab cursor is unsupported */
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+
+.shade:active {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+
+.annotation {
+  z-index: 999;
+  position: absolute;
+  background-color: white;
+  border-radius: 15px 15px 15px 0px;
+  bottom: 30px;
+  left: 30px;
+  /* box-shadow: 3px 3px 1px rgba(128, 128, 128, 0.6); */
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
+    transform: translatey(0px);
+  }
+  50% {
+    box-shadow: 0 10px 15px 0px rgba(0, 0, 0, 0.3);
+    transform: translatey(-5px);
+  }
+  100% {
+    box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
+    transform: translatey(0px);
+  }
+}
+
+.annotation p {
+  font-family: Helvetica, Arial, sans-serif;
+  color: #b58863;
+  text-align: center;
+  margin: 10px;
+}
+
+.choice-shade-1 {
+  background-color: green;
+}
+
+.choice-shade-2 {
+  background-color: yellow;
+}
+
+.choice-shade-3 {
+  background-color: red;
+}
+
+.choice-shade-4 {
+  background-color: purple;
+}
+
+.choice-shade-5 {
+  background-color: grey;
+}
+
+.notation-322f9 {
+  cursor: default;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  position: absolute;
+}
+
+.alpha-d2270 {
+  bottom: 1px;
+  right: 3px;
+}
+
+.numeric-fc462 {
+  top: 2px;
+  left: 2px;
+}
+
+.ghost-12abc {
+  opacity: 0.3;
+  position: absolute;
+
+  pointer-events: none;
+}
+
+.piece-417db {
+  position: absolute;
+}
