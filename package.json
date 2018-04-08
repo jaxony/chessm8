@@ -1,0 +1,8 @@
+{
+  "name": "chessm8",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/jaxony/chessm8.git",
+  "author": "Jackson Huang <jackson_huang@live.com>",
+  "license": ""
+}
