@@ -1,53 +1,36 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chessm8</title>
-    
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="css/chessboard-0.3.0.min.css">
-    <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet'>
 
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script src="js/chessboard-0.3.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.js"></script>
-  </head>
-  <body>
-    <div class="container">
-      <div class="verticalContainer">
-        <div id="titleContainer" class="container">
-          <div class="verticalContainer">
-            <h1 id="title">ChessRank</h1>
-            <h3 id="subtitle">1 Choose. 2 Rank. 3 &lt;spacebar&gt;.</h3>
-          </div>
-        </div>
-        <div class="innerContainer">
-          <div id="board"></div>
-          <div id="sidePanel">
-            <div id="headingContainer">
-              <div id="heading">
-                <h2></h2>
-                <div id="pointsContainer">
-                  <h3><span id="points">0</span><span id="change"></span> points</h3>
-                </div>
-              </div>
-            </div>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chessm8</title>
 
-            <div class="sortablePanel">
-              <ul id="moves"></ul>
-            </div>
-            <div id="buttonContainer">
-              <button id="submitMovesBtn" class="ui-button ui-widget ui-corner-all">
-                Ask Alan 🤖
-              </button>
-            </div>
-          </div>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="css/chessboard.css">
+  <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet'>
+
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.2/chess.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="verticalContainer">
+      <div id="titleContainer" class="container">
+        <div class="verticalContainer">
+          <h1 id="title">ChessRank</h1>
+          <h3 id="subtitle">1 Choose. 2 Rank. 3 &lt;spacebar&gt;.</h3>
         </div>
       </div>
+      <div class="innerContainer">
+        <div id="board"></div>
+      </div>
     </div>
-    <script src="js/bundle.js"></script>
-  </body>
+  </div>
+  <script src="js/bundle.js"></script>
+</body>
+
 </html>
