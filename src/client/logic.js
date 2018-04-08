@@ -6,7 +6,7 @@ var Chess = require("chess.js");
 
 var Logic = function Logic() {
   this.game = new Chess();
-  this.engine = new Worker("stockfish.js");
+  this.engine = new Worker("js/stockfish.js");
 };
 
 Logic.prototype.setupEngine = function() {
