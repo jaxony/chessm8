@@ -5,13 +5,18 @@ var path = require("path");
 var Chess = require("chess.js");
 require("./static/js/chessboard");
 
+function onDrop(source, target, piece, newPos, oldPos, orientation) {
+  setTimeout(main.gameBoard.position, 250, oldPos);
+}
+
 /**
  * Returns board config Object for Chessboard.js
  */
 function getBoardConfig() {
   return {
     position: "start",
-    draggable: true
+    draggable: true,
+    onDrop: onDrop
   };
 }
 
@@ -35,6 +40,7 @@ function createLogic() {
 var Main = function Main() {
   this.gameBoard = createBoard();
   this.gameLogic = createLogic();
+  this.gameBoard.setAddGhost(true);
 };
 
 var main = new Main();
