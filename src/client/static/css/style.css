@@ -1,5 +1,5 @@
 html {
-  font-family: 'Ubuntu', Helvetica;
+  font-family: "Ubuntu", Helvetica;
   color: #4c4c4c;
 }
 
@@ -21,7 +21,7 @@ html {
 
 #title {
   margin-bottom: 5px;
-  font-family: 'Ubuntu';
+  font-family: "Ubuntu";
   font-size: 50px;
 }
 
@@ -37,98 +37,5 @@ html {
 }
 
 #board {
-  width: 400px;
-}
-
-.sortablePanel {
-  display: flex;
-  justify-content: center;
-}
-
-#moves {
-  /*display: flex;
-  justify-content: center;*/
-  list-style-type: none;
-  padding-top: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  width: 150px;
-  background-color: #e2e2e2;
-  height: 132px;
-
-}
-
-#moves li {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
-  /*width: 150px;*/
-}
-
-.move {
-  /*color: #fff;*/
-  border-radius: 10px;
-  /*background-color: #5995DA;*/
-  font-family: "Arial", serif;
-  padding: 10px;
-  margin-top: 10px;
-}
-
-#submitMovesBtn {
-  width: 150px;
-}
-
-#teleportBtn {
-  margin-top: 20px;
-  width: 150px;
-}
-
-.progressLabel {
-  position: absolute;
-  padding-top: 7px;
-  font-weight: bold;
-  display: flex;
-  font-family: 'Ubuntu', Helvetica;
-  justify-content: space-around;
-  width: 100px;
-}
-
-#buttonContainer {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-#sidePanel {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column; 
-  width: 300px;
-  border-radius: 10px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #848484;
-}
-
-#headingContainer {
-  display: flex;
-  justify-content: center;
-}
-
-#heading h2 {
-  margin-bottom: 0px;
-}
-
-#heading h3 {
-  margin-bottom: 0px;
-}
-
-#heading {
-  display: flex;
-  flex-direction: column;
-}
-
-#pointsContainer {
-  display: flex;
-  justify-content: center;
+  width: 500px;
 }
