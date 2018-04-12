@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "mocha 'src/**/*.test.js'",
+    "test": "mocha './src/**/*.test.js'",
     "server:dev": "nodemon ./src/server/server.js",
     "client:dev": "cd src/client && webpack --mode development --watch",
     "start": "node ./src/server/server.js"
@@ -21,7 +21,9 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
+    "jquery": "^3.3.1",
     "jsdom": "^11.7.0",
+    "jsdom-global": "^3.0.2",
     "mocha": "^5.0.5",
     "mocha-jsdom": "^1.1.0",
     "nodemon": "^1.17.3",

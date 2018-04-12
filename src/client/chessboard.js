@@ -9,7 +9,9 @@
 (function() {
   "use strict";
 
-  var $ = window["jQuery"];
+  var $ = window["jQuery"] ? window["jQuery"] : require("jquery")(window); // testing environment
+  // var $ = require("jquery"); // testing environment
+  // console.log($);
 
   // ---------------------------------------------------------------------------
   // Constants
