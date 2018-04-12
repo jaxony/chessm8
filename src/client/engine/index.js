@@ -169,6 +169,7 @@ Engine.prototype.goCommand = function(commands, infoHandler) {
   this.goInfiniteListener = engineStdoutListener;
   this.engine.addEventListener("message", engineStdoutListener, false);
   this.engine.postMessage(inputCommand);
+  return this.isReadyCommand();
 };
 
 module.exports = Engine;
