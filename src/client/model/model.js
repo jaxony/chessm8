@@ -17,8 +17,8 @@ Model.prototype.getMode = function() {
 };
 
 Model.prototype.setMode = function(mode) {
-  if (modes[mode] === undefined) {
-    throw exceptions.INVALID_MODE;
+  if (!modes[mode]) {
+    throw new Error(exceptions.INVALID_MODE);
   }
   this.state.mode = mode;
 };

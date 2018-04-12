@@ -1,8 +1,9 @@
+var assert = require("assert");
+var chai = require("chai");
+
 var Model = require("./model.js");
 var modes = require("./modes.js");
 var exceptions = require("./exceptions.js");
-
-var assert = require("assert");
 
 describe("Model", function() {
   describe("Unit tests", function() {
@@ -11,6 +12,15 @@ describe("Model", function() {
         var model = new Model();
         assert.equal(model.getMode(), modes.NORMAL);
       });
+    });
+
+    it("#setMode(), should throw INVALID_MODE exception", function() {
+      var model = new Model();
+      chai
+        .expect(
+          model.setMode.bind(model, "this is a random invalid mode string")
+        )
+        .to.throw(exceptions.INVALID_MODE);
     });
   });
 
