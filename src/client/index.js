@@ -5,12 +5,8 @@ var path = require("path");
 var Model = require("./model/model.js");
 var modes = require("./model/modes.js");
 var Logic = require("./logic.js");
+var modelExceptions = require("./model/exceptions");
 require("./chessboard");
-
-function onDrop(source, target, piece, newPos, oldPos, orientation) {
-  main.board.annotate(target, "nice move");
-  setTimeout(main.board.position, 250, oldPos);
-}
 
 /**
  * Returns board config Object for Chessboard.js
@@ -18,8 +14,7 @@ function onDrop(source, target, piece, newPos, oldPos, orientation) {
 function getBoardConfig() {
   return {
     position: "start",
-    draggable: true,
-    onDrop: onDrop
+    draggable: true
   };
 }
 
@@ -62,12 +57,32 @@ function decoration(board) {
  */
 var Main = function Main() {
   this.board = createBoard();
-  this.board.setAddGhost(true);
   // decoration(this.board);
 
   this.logic = new Logic();
-  this.model = new Model();
+  this.model = new Model(this.board);
   this.registerKeyListeners();
+};
+
+Main.prototype.start = function() {
+  this.setMode(modes.NORMAL);
+};
+
+Main.prototype.registerKeyListeners = function() {
+  var self = this;
+  $(document).keydown(function(e) {
+    // console.log("Pressed key: " + e.which);
+    if (e.which === 32) {
+      // space
+      self.submitThisRound();
+    } else if (e.which === 13) {
+      // enter
+      // switchModes();
+    } else if ((e.which === 8 || e.which === 46) && canTeleport()) {
+      // backspace, delete
+      // teleport();
+    }
+  });
 };
 
 Main.prototype.submitThisRound = function() {
@@ -83,28 +98,20 @@ Main.prototype.submitThisRound = function() {
       break;
     case modes.NORMAL:
       console.log("normal");
-    default:
+      this.handleNormalMode();
       break;
+    default:
+      throw new Error(modelExceptions.INVALID_MODE);
   }
 };
 
-Main.prototype.registerKeyListeners = function() {
-  var self = this;
-  $(document).keydown(function(e) {
-    // console.log("Pressed key: " + e.which);
-    if (e.which === 32) {
-      // space
-      console.log(self);
-      self.submitThisRound();
-      // console.log("moves");
-    } else if (e.which === 13) {
-      // enter
-      // switchModes();
-    } else if ((e.which === 8 || e.which === 46) && canTeleport()) {
-      // backspace, delete
-      // teleport();
-    }
-  });
+Main.prototype.setMode = function(mode) {
+  this.model.setMode(mode);
+};
+
+Main.prototype.handleNormalMode = function() {
+  // user's first move is immediately committed as the move
 };
 
 var main = new Main();
+main.start();

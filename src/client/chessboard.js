@@ -2034,6 +2034,11 @@
       $board.find("." + CSS["annotation"]).remove();
     };
 
+    widget.setOnDrop = function(onDropFunc) {
+      if (!isFunction(onDropFunc)) return;
+      config.onDrop = onDropFunc;
+    };
+
     // -------------------------------------------------------------------------
     // Browser Events
     // -------------------------------------------------------------------------
