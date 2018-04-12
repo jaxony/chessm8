@@ -2,7 +2,8 @@
  * Entry point of the application.
  */
 var path = require("path");
-var Model = require("./model.js");
+var Model = require("./model/model.js");
+var modes = require("./model/modes.js");
 var Logic = require("./logic.js");
 require("./chessboard");
 
@@ -59,39 +60,51 @@ function decoration(board) {
 /**
  * Constructs the Main app that contains UI, Logic, etc.
  */
-function Main() {
+var Main = function Main() {
   this.board = createBoard();
   this.board.setAddGhost(true);
-  decoration(this.board);
+  // decoration(this.board);
 
   this.logic = new Logic();
   this.model = new Model();
+  this.registerKeyListeners();
+};
 
+Main.prototype.submitThisRound = function() {
+  // handles different types of 'round's
+  // 'ranking', 'battleship', 'russian roulette', etc.
+  var mode = this.model.getMode();
+  switch (mode) {
+    case modes.RANK:
+      console.log("rank");
+      break;
+    case modes.GUESS:
+      console.log("guess");
+      break;
+    case modes.NORMAL:
+      console.log("normal");
+    default:
+      break;
+  }
+};
+
+Main.prototype.registerKeyListeners = function() {
   var self = this;
-  self.logic.engine
-    .isReadyCommand()
-    .then(function() {
-      return self.logic.engine.positionCommand("startpos");
-    })
-    .then(function() {
-      return self.logic.engine.goCommand(
-        {
-          movetime: 3000,
-          searchmoves: "e2e4"
-        },
-        function infoHandler(info) {
-          console.log(info);
-        }
-      );
-    })
-    .then(function() {
-      return self.logic.engine.stopCommand();
-    })
-    .then(function(bestmove) {
-      console.log("Bestmove: ");
-      console.log(bestmove);
-    });
-  console.log("Before promise");
-}
+  $(document).keydown(function(e) {
+    // console.log("Pressed key: " + e.which);
+    if (e.which === 32) {
+      // space
+      console.log(self);
+      self.submitThisRound();
+      // console.log("moves");
+    } else if (e.which === 13) {
+      // enter
+      // switchModes();
+    } else if ((e.which === 8 || e.which === 46) && canTeleport()) {
+      // backspace, delete
+      // teleport();
+    }
+  });
+};
 
 var main = new Main();

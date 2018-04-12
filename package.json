@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha 'src/**/*.test.js'",
     "server:dev": "nodemon ./src/server/server.js",
     "client:dev": "cd src/client && webpack --mode development --watch",
     "start": "node ./src/server/server.js"
