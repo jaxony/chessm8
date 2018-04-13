@@ -24,8 +24,21 @@ Logic.prototype.updatePosition = function(move) {
   this.game.move(move);
 };
 
+Logic.prototype.isLegalMove = function(move) {
+  // see if the move is legal
+  const result = this.game.move(move);
+  this.game.undo();
+  return result !== null;
+};
+
+Logic.prototype.move = function(move) {
+  assert(this.isLegalMove(move) === true);
+  this.game.move(move);
+};
+
 Logic.prototype.getNextBestMove = function(position) {
   assert(this.getPosition() === position);
+  this.game.load(position);
   const self = this;
   return this.engine
     .isReadyCommand()

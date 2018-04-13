@@ -5,6 +5,7 @@
 const modes = require("./modes.js");
 const exceptions = require("./exceptions.js");
 const utils = require("../utils");
+const assert = require("assert");
 
 /**
  * Constructs a Model object.
@@ -17,7 +18,8 @@ var Model = function Model(board, logic) {
   this.state = {
     abilities: {},
     mode: modes.NORMAL,
-    position: this.logic.getPosition()
+    position: this.logic.getPosition(),
+    player: "white"
   };
 };
 
@@ -35,22 +37,36 @@ Model.prototype.setMode = function(mode) {
 
 Model.prototype.setPosition = function(position) {
   this.state.position = position;
+  this.board.position(position);
 };
 
 /**
- * Updates position in Model and UI.
+ * Updates position in Model and UI, and Logic if required.
  * @param {Object} move
  */
 Model.prototype.move = function(move) {
+  console.log("update move =======================");
   this.logic.updatePosition(move);
-  // update UI
-  this.board.move(utils.chessjsToChessboard(move));
   this.setPosition(this.logic.getPosition());
 };
 
 Model.prototype.updateBoardForNormalMode = function() {
   const self = this;
   this.board.setAddGhost(false);
+  var move = null;
+
+  this.board.setOnDragStart(function(source, piece, position, orientation) {
+    // only allow (correct) pieces to be dragged when game is still ongoing
+    const wrongPieceRegex = self.state.player === "white" ? /^b/ : /^w/;
+    if (
+      self.logic.game.in_checkmate() === true ||
+      self.logic.game.in_draw() === true ||
+      piece.search(wrongPieceRegex) !== -1
+    ) {
+      return false;
+    }
+  });
+
   this.board.setOnDrop(function(
     source,
     target,
@@ -59,16 +75,16 @@ Model.prototype.updateBoardForNormalMode = function() {
     oldPos,
     orientation
   ) {
-    // see if the move is legal
-    const move = self.logic.game.move({
-      from: source,
-      to: target,
-      promotion: "q"
-    });
+    const maybeMove = { from: source, to: target, promotion: "q" };
+    if (!self.logic.isLegalMove(maybeMove)) {
+      return "snapback";
+    }
+    move = maybeMove;
+  });
 
-    // illegal move
-    if (move === null) return "snapback";
-    self.setPosition(self.logic.getPosition());
+  this.board.setOnSnapEnd(function() {
+    assert(move !== null);
+    self.move(move);
     self.setMode(modes.OPPONENT);
   });
 };
@@ -96,9 +112,18 @@ Model.prototype.updateBoardForOpponentMode = function() {
   // pick move: this.logic.engine
   // this. logic.
   const self = this;
+  this.board.setAddGhost(false);
+  // prevent any dragging when opponent is thinking
+  this.board.setOnDragStart(function(source, piece, position, orientation) {
+    return false;
+  });
+  this.board.setOnDrop(null);
+  this.board.setOnSnapEnd(null);
+
   this.logic.getNextBestMove(this.state.position).then(function(bestmove) {
     console.log(bestmove);
     self.move(bestmove);
+    self.setMode(modes.NORMAL);
   });
 };
 
