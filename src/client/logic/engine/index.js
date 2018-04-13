@@ -12,14 +12,16 @@ Engine.prototype.createWorker = function() {
 };
 
 Engine.prototype.isReadyCommand = function() {
-  console.log("IS READY COMMAND INVOKED");
   var self = this;
   var deferred = Q.defer();
 
   var engineStdoutListener = function(event) {
     var data = event.data;
-    console.log(data);
     if (data === "readyok") {
+      if (self.printListener) {
+        console.log("***********************");
+        self.engine.removeEventListener("message", self.printListener, false);
+      }
       self.engine.removeEventListener("message", engineStdoutListener, false);
       deferred.resolve();
     }
@@ -59,6 +61,17 @@ Engine.prototype.positionCommand = function(fen, moves) {
   }
   message += endOfLine;
   this.engine.postMessage(message);
+  return this.isReadyCommand();
+};
+
+Engine.prototype.printCommand = function(infoHandler) {
+  var engineStdoutListener = function(event) {
+    const data = event.data;
+    if (typeof infoHandler === "function") infoHandler(data);
+  };
+  this.printListener = engineStdoutListener;
+  this.engine.addEventListener("message", engineStdoutListener, false);
+  this.engine.postMessage("d" + endOfLine);
   return this.isReadyCommand();
 };
 
