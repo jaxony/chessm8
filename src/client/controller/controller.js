@@ -22,8 +22,6 @@ Controller.prototype.registerKeyListeners = function() {
 };
 
 Controller.prototype.submitThisRound = function() {
-  // handles different types of 'round's
-  // 'ranking', 'battleship', 'russian roulette', etc.
   const mode = this.model.getMode();
   switch (mode) {
     case modes.RANK:
