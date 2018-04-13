@@ -1,7 +1,8 @@
 var MODE = {
   NORMAL: "NORMAL",
   RANK: "RANK",
-  GUESS: "GUESS"
+  GUESS: "GUESS",
+  OPPONENT: "OPPONENT"
 };
 
 module.exports = MODE;
