@@ -119,7 +119,7 @@ Engine.prototype.stopCommand = function() {
 
   var engineStdoutListener = function(event) {
     var data = event.data;
-    console.log("STOP: " + data);
+    // console.log("STOP: " + data);
     if (data.startsWith("bestmove")) {
       if (self.goInfiniteListener) {
         self.engine.removeEventListener(

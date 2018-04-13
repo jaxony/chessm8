@@ -1,3 +1,3 @@
 module.exports = {
-  MOVETIME: 1000 // milliseconds
+  MOVETIME: 300 // milliseconds
 };

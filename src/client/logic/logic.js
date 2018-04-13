@@ -21,14 +21,16 @@ Logic.prototype.getPosition = function() {
 };
 
 Logic.prototype.updatePosition = function(move) {
-  this.game.move(move);
+  const result = this.game.move(move);
+  assert(result !== null);
 };
 
 Logic.prototype.isLegalMove = function(move) {
   // see if the move is legal
   const result = this.game.move(move);
-  this.game.undo();
-  return result !== null;
+  const isLegal = result !== null;
+  if (isLegal) this.game.undo();
+  return isLegal;
 };
 
 Logic.prototype.move = function(move) {
@@ -46,9 +48,9 @@ Logic.prototype.getNextBestMove = function(position) {
       return self.engine.positionCommand(position);
     })
     .then(function() {
-      return self.engine.printCommand(function(data) {
-        console.log("Print: " + data);
-      });
+      // return self.engine.printCommand(function(data) {
+      // console.log("Print: " + data);
+      // });
     })
     .then(function() {
       return self.engine.goCommand({
