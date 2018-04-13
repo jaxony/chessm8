@@ -1,11 +1,11 @@
 const path = require("path");
 
-const Model = require("./model/model.js");
+const Model = require("./model/model");
 const modelExceptions = require("./model/exceptions");
 const modes = require("./model/modes");
 
-const Logic = require("./logic.js");
-const Controller = require("./controller/Controller.js");
+const Logic = require("./logic/logic");
+const Controller = require("./controller/controller.js");
 const Board = require("./chessboard");
 
 // an anonymous function is called that adds 'Chessboard' to the window
