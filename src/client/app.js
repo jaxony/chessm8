@@ -6,15 +6,16 @@ const modes = require("./model/modes");
 
 const Logic = require("./logic.js");
 const Controller = require("./controller/Controller.js");
+const Board = require("./chessboard");
 
 // an anonymous function is called that adds 'Chessboard' to the window
-require("./chessboard");
+// require("./chessboard");
 
 /**
  * Creates UI of chessboard.
  */
 function createBoard() {
-  return Chessboard("board", {
+  return Board("board", {
     position: "start",
     draggable: true
   });

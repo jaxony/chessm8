@@ -9,9 +9,13 @@
 (function() {
   "use strict";
 
-  var $ = window["jQuery"] ? window["jQuery"] : require("jquery")(window); // testing environment
-  // var $ = require("jquery"); // testing environment
-  // console.log($);
+  if (!window.jQuery) {
+    console.log("jQuery not found!");
+    throw "jQuery not in window!";
+  } else {
+    console.log("jQuery found!");
+    var $ = window.jQuery;
+  }
 
   // ---------------------------------------------------------------------------
   // Constants
@@ -2331,6 +2335,7 @@
   } // end constructor
 
   // TODO: do module exports here
+  module.exports = constructor;
   window["Chessboard"] = constructor;
 
   // support legacy ChessBoard name
