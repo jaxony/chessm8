@@ -2041,8 +2041,15 @@
     };
 
     widget.setOnDrop = function(onDropFunc) {
-      if (!isFunction(onDropFunc)) return;
       config.onDrop = onDropFunc;
+    };
+
+    widget.setOnDragStart = function(onDragStartFunc) {
+      config.onDragStart = onDragStartFunc;
+    };
+
+    widget.setOnSnapEnd = function(onSnapEnd) {
+      config.onSnapEnd = onSnapEnd;
     };
 
     // -------------------------------------------------------------------------
