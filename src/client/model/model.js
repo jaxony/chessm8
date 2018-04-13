@@ -5,8 +5,14 @@
 var modes = require("./modes.js");
 var exceptions = require("./exceptions.js");
 
-var Model = function Model(board) {
+/**
+ * Constructs a Model object.
+ * @param {Object} board Chessboardjs User interface
+ * @param {Object} logic Component containing game rules and chess engine
+ */
+var Model = function Model(board, logic) {
   this.board = board;
+  this.logic = logic;
   this.state = {
     abilities: {},
     mode: modes.NORMAL
@@ -26,10 +32,28 @@ Model.prototype.setMode = function(mode) {
 };
 
 Model.prototype.updateBoard = function() {
+  const self = this;
   switch (this.state.mode) {
     case modes.NORMAL:
       this.board.setAddGhost(false);
-      this.board.setOnDrop(null);
+      this.board.setOnDrop(function(
+        source,
+        target,
+        piece,
+        newPos,
+        oldPos,
+        orientation
+      ) {
+        // see if the move is legal
+        const move = self.logic.game.move({
+          from: source,
+          to: target,
+          promotion: "q"
+        });
+
+        // illegal move
+        if (move === null) return "snapback";
+      });
       break;
     case modes.GUESS:
       break;

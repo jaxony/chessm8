@@ -29,7 +29,7 @@ var Main = function Main() {
   // decoration(this.board);
 
   this.logic = new Logic();
-  this.model = new Model(this.board);
+  this.model = new Model(this.board, this.logic);
   this.controller = new Controller(this.model);
 };
 
