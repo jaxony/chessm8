@@ -94,24 +94,48 @@
   margin: 10px;
 }
 
+.white-text p {
+  color: white !important;
+}
+
 .choice-shade-1 {
-  background-color: green;
+  background-color: green !important;
 }
 
 .choice-shade-2 {
-  background-color: yellow;
+  background-color: orange !important;
 }
 
 .choice-shade-3 {
-  background-color: red;
+  background-color: red !important;
 }
 
 .choice-shade-4 {
-  background-color: purple;
+  background-color: purple !important;
 }
 
 .choice-shade-5 {
-  background-color: grey;
+  background-color: grey !important;
+}
+
+.choice-border-1 {
+  border: 3px solid green;
+}
+
+.choice-border-2 {
+  border: 3px solid orange;
+}
+
+.choice-border-3 {
+  border: 3px solid red;
+}
+
+.choice-border-4 {
+  border: 3px solid purple;
+}
+
+.choice-border-5 {
+  border: 3px solid grey;
 }
 
 .notation-322f9 {
