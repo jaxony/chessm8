@@ -30,8 +30,28 @@ function parseCentipawnEvaluation(infoLine) {
   return -100000; // basically lost as checkmate soon!
 }
 
+/**
+ * Converts move Object to an Array.
+ * @param {Object} obj Move object from chessboardjs.
+ */
+function convertObjectToArray(obj) {
+  const array = new Array();
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      array.push({
+        playerRank: key,
+        from: obj[key].from,
+        to: obj[key].to,
+        score: null
+      });
+    }
+  }
+  return array;
+}
+
 module.exports = {
   isInteger: isInteger,
   chessjsToChessboard: chessjsToChessboard,
   parseCentipawnEvaluation: parseCentipawnEvaluation,
+  convertObjectToArray: convertObjectToArray
 };
