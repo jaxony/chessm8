@@ -40,6 +40,20 @@ Model.prototype.setPosition = function(position) {
   this.board.position(position);
 };
 
+Model.prototype.submitForRankMode = function() {
+  const rankedMoves = this.board.getRankedMoves();
+  console.log(rankedMoves);
+  this.logic.evaluateMove(rankedMoves[1]).then(function(score) {
+    console.log(
+      "Evaluated score for " +
+        rankedMoves[1].from +
+        rankedMoves[1].to +
+        " = " +
+        score
+    );
+  });
+};
+
 /**
  * Updates position in Model and UI, and Logic if required.
  * @param {Object} move

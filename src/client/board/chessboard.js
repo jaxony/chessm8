@@ -1482,7 +1482,7 @@
           }
         }
       }
-      console.log(squares);
+      // console.log(squares);
       return squares;
     }
 
@@ -1500,7 +1500,7 @@
         from: draggedPieceSource,
         to: draggedPieceLocation
       };
-      console.log(moveChoices);
+      // console.log(moveChoices);
     }
 
     function clearMoveChoices() {
@@ -1709,10 +1709,10 @@
       var tmpMove = moveChoices[rank1];
       moveChoices[rank1] = moveChoices[rank2];
       moveChoices[rank2] = tmpMove;
-      console.log("================");
-      console.log("Reranked");
-      console.log(moveChoices);
-      console.log("================");
+      // console.log("================");
+      // console.log("Reranked");
+      // console.log(moveChoices);
+      // console.log("================");
     }
 
     function getRankFromClassString(className) {
@@ -2050,6 +2050,10 @@
 
     widget.setOnSnapEnd = function(onSnapEnd) {
       config.onSnapEnd = onSnapEnd;
+    };
+
+    widget.getRankedMoves = function() {
+      return moveChoices;
     };
 
     // -------------------------------------------------------------------------

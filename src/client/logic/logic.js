@@ -38,6 +38,41 @@ Logic.prototype.move = function(move) {
   this.game.move(move);
 };
 
+Logic.prototype.evaluateMove = function(moveObj) {
+  var lastInfo = "";
+
+  const moveString = moveObj.from + moveObj.to; // e.g. e2e4
+  const self = this;
+  return this.engine
+    .isReadyCommand()
+    .then(function() {
+      return self.engine.positionCommand(self.getPosition());
+    })
+    .then(function() {
+      console.log("Starting analysis");
+      return self.engine.goCommand(
+        {
+          movetime: config.EVAL_TIME,
+          searchmoves: moveString
+        },
+        function infoHandler(info) {
+          lastInfo = info;
+        }
+      );
+    })
+    .then(function() {
+      return self.engine.stopCommand();
+    })
+    .then(function() {
+      console.log("Last info: " + lastInfo);
+      const score = utils.parseCentipawnEvaluation(lastInfo);
+      return parseInt(score);
+    })
+    .catch(function(err) {
+      console.log(err.message);
+    });
+};
+
 Logic.prototype.getNextBestMove = function(position) {
   assert(this.getPosition() === position);
   this.game.load(position);
@@ -46,11 +81,6 @@ Logic.prototype.getNextBestMove = function(position) {
     .isReadyCommand()
     .then(function() {
       return self.engine.positionCommand(position);
-    })
-    .then(function() {
-      // return self.engine.printCommand(function(data) {
-      // console.log("Print: " + data);
-      // });
     })
     .then(function() {
       return self.engine.goCommand({

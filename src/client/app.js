@@ -19,7 +19,7 @@ var Main = function Main() {
 };
 
 Main.prototype.start = function() {
-  this.model.setMode(modes.NORMAL);
+  this.model.setMode(modes.RANK);
 };
 
 module.exports = Main;

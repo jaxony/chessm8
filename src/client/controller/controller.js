@@ -25,7 +25,7 @@ Controller.prototype.submitThisRound = function() {
   const mode = this.model.getMode();
   switch (mode) {
     case modes.RANK:
-      console.log("rank");
+      this.model.submitForRankMode();
       break;
     case modes.GUESS:
       console.log("guess");
