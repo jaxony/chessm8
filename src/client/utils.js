@@ -39,7 +39,7 @@ function convertObjectToArray(obj) {
   for (var key in obj) {
     if (obj.hasOwnProperty(key)) {
       array.push({
-        playerRank: key,
+        playerRank: parseInt(key),
         from: obj[key].from,
         to: obj[key].to,
         score: null
@@ -49,9 +49,40 @@ function convertObjectToArray(obj) {
   return array;
 }
 
+function sortMovesByScore(movesWithScores) {
+  movesWithScores.sort(function(a, b) {
+    if (a.score < b.score) {
+      return -1;
+    } else if (a.score === b.score) {
+      return 0;
+    } else {
+      return 1;
+    }
+  });
+}
+
+function getScoreEmoji(score) {
+  assert(typeof score === "number");
+  var emoji = "";
+  if (score < 0) {
+    emoji = "😔";
+  } else if (score < 50) {
+    emoji = "Nice! ✅";
+  } else if (score < 100) {
+    emoji = "Great! 🎉";
+  } else if (score === 100) {
+    emoji = "💯";
+  } else {
+    emoji = "🔥🚀🙌";
+  }
+  return emoji;
+}
+
 module.exports = {
   isInteger: isInteger,
   chessjsToChessboard: chessjsToChessboard,
   parseCentipawnEvaluation: parseCentipawnEvaluation,
-  convertObjectToArray: convertObjectToArray
+  convertObjectToArray: convertObjectToArray,
+  sortMovesByScore: sortMovesByScore,
+  getScoreEmoji: getScoreEmoji
 };

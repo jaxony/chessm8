@@ -1023,8 +1023,15 @@
       return html;
     }
 
-    function buildAnnotationHTML(annotation) {
-      var html = "<div " + 'class="{annotation}" >';
+    function buildAnnotationHTML(annotation, rank) {
+      var html = '<div class="{annotation}';
+
+      if (isInteger(rank)) {
+        html += " choice-border-" + rank + '">';
+      } else {
+        html += ">";
+      }
+
       if (annotation) {
         html += "<p>" + annotation + "</p>";
       } else {
@@ -2008,11 +2015,12 @@
     widget.annotate = function(
       square,
       annotation,
+      rank,
       lifetime,
       textAnimationCallback
     ) {
       if (!validSquare(square)) return;
-      var $elem = $(buildAnnotationHTML(annotation));
+      var $elem = $(buildAnnotationHTML(annotation, rank));
       $elem
         .hide()
         .appendTo("#" + squareElsIds[square])
