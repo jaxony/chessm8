@@ -12,6 +12,7 @@
   "author": "Jackson Huang <jackson_huang@live.com>",
   "license": "UNLICENSED",
   "dependencies": {
+    "bluebird": "^3.5.1",
     "chess.js": "^0.10.2",
     "express": "^4.16.3",
     "is-running": "^2.1.0",

@@ -6,6 +6,7 @@ const modes = require("./modes.js");
 const exceptions = require("./exceptions.js");
 const utils = require("../utils");
 const assert = require("assert");
+const Promise = require("bluebird");
 
 /**
  * Constructs a Model object.
