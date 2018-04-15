@@ -42,17 +42,32 @@ Model.prototype.setPosition = function(position) {
 };
 
 Model.prototype.submitForRankMode = function() {
-  const rankedMoves = this.board.getRankedMoves();
-  console.log(rankedMoves);
-  this.logic.evaluateMove(rankedMoves[1]).then(function(score) {
-    console.log(
-      "Evaluated score for " +
-        rankedMoves[1].from +
-        rankedMoves[1].to +
-        " = " +
-        score
-    );
+  const playerRankedMoves = this.board.getRankedMoves();
+
+  const movesArray = utils.convertObjectToArray(playerRankedMoves);
+  // console.log(movesArray);
+
+  // evaluate moves
+  const self = this;
+  Promise.mapSeries(movesArray, function(move) {
+    return self.logic.evaluateMove(move);
+  }).then(function(movesWithScores) {
+    console.log(movesWithScores);
   });
+
+  // sort in ascending quality
+
+  // for every move, annotate from the worst to best
+
+  // this.logic.evaluateMove(rankedMoves[1]).then(function(score) {
+  //   console.log(
+  //     "Evaluated score for " +
+  //       rankedMoves[1].from +
+  //       rankedMoves[1].to +
+  //       " = " +
+  //       score
+  //   );
+  // });
 };
 
 /**

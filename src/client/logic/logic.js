@@ -38,6 +38,12 @@ Logic.prototype.move = function(move) {
   this.game.move(move);
 };
 
+/**
+ * Evaluates move in centipawns using the chess engine.
+ * @param {Object} moveObj Move object {rank:, to:, from:, score:}
+ * @returns The original move object with the `score` value updated
+ *          with the evaluation score in centipawns.
+ */
 Logic.prototype.evaluateMove = function(moveObj) {
   var lastInfo = "";
 
@@ -49,7 +55,6 @@ Logic.prototype.evaluateMove = function(moveObj) {
       return self.engine.positionCommand(self.getPosition());
     })
     .then(function() {
-      console.log("Starting analysis");
       return self.engine.goCommand(
         {
           movetime: config.EVAL_TIME,
@@ -64,9 +69,10 @@ Logic.prototype.evaluateMove = function(moveObj) {
       return self.engine.stopCommand();
     })
     .then(function() {
-      console.log("Last info: " + lastInfo);
+      // console.log("Last info: " + lastInfo);
       const score = utils.parseCentipawnEvaluation(lastInfo);
-      return parseInt(score);
+      moveObj.score = parseInt(score);
+      return moveObj;
     })
     .catch(function(err) {
       console.log(err.message);
