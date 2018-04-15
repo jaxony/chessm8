@@ -33,5 +33,5 @@ function parseCentipawnEvaluation(infoLine) {
 module.exports = {
   isInteger: isInteger,
   chessjsToChessboard: chessjsToChessboard,
-  parseCentipawnEvaluation: parseCentipawnEvaluation
+  parseCentipawnEvaluation: parseCentipawnEvaluation,
 };
