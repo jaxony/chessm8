@@ -83,7 +83,7 @@ Model.prototype.showFeedbackForMoves = function(moves) {
     const correctRank = numMoves - index;
     const emoji = utils.getScoreEmoji(move.score);
     return self.board.annotate(
-      move.to, // square to annotate
+      move.from, // square to annotate
       null, // no annotation
       correctRank, // for border colour
       emoji, // decoration
