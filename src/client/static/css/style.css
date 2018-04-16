@@ -29,7 +29,7 @@ html {
 .innerContainer {
   width: 800px;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
 }
 
 .verticalContainer {
@@ -56,4 +56,11 @@ html {
 
 #board {
   width: 500px;
+}
+
+#rewardsPanel {
+  width: 75px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0 20px 20px 0;
+  justify-content: center;
 }

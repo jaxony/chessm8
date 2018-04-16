@@ -7,6 +7,7 @@ const exceptions = require("./exceptions.js");
 const utils = require("../utils");
 const uiConfig = require("../ui/config");
 const modelConfig = require("./config");
+const REWARDS = require("./rewards");
 
 const assert = require("assert");
 const Promise = require("bluebird");
@@ -20,7 +21,7 @@ var Model = function Model(board, logic) {
   this.board = board;
   this.logic = logic;
   this.state = {
-    abilities: {},
+    rewards: {},
     mode: modes.NORMAL,
     position: this.logic.getPosition(),
     player: "white",
@@ -47,6 +48,19 @@ Model.prototype.setPosition = function(position) {
   this.board.position(position);
 };
 
+Model.prototype.chooseReward = function() {
+  return REWARDS.SERVER_CHOOSES_BEST_MOVE;
+};
+
+Model.prototype.rewardPlayer = function() {
+  const reward = this.chooseReward();
+  if (this.rewards[reward]) {
+    this.rewards[reward] = 1;
+  } else {
+    this.rewards[rewards] += 1;
+  }
+};
+
 Model.prototype.submitForRankMode = function() {
   if (this.board.getNumMoveChoices() === 0) return;
 
@@ -63,7 +77,7 @@ Model.prototype.submitForRankMode = function() {
     .then(function(movesWithScores) {
       utils.sortMovesByScore(movesWithScores);
       if (utils.isCorrectRanking(movesWithScores)) {
-        console.log("Correct ranking");
+        self.rewardPlayer();
       } else {
         console.log("Bad ranking");
       }
