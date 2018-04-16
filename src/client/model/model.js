@@ -5,7 +5,7 @@
 const modes = require("./modes.js");
 const exceptions = require("./exceptions.js");
 const utils = require("../utils");
-const uiConfig = require("../ui/config");
+const viewConfig = require("../view/config");
 const modelConfig = require("./config");
 const REWARDS = require("./rewards");
 
@@ -107,7 +107,7 @@ Model.prototype.showFeedbackForMoves = function(moves) {
       null, // no annotation
       correctRank, // for border colour
       emoji, // decoration
-      uiConfig.ANNOTATION_LIFETIME, // disappear after msecs
+      viewConfig.ANNOTATION_LIFETIME, // disappear after msecs
       function() {
         $(this)
           .prop("Counter", 0)
