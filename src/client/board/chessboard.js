@@ -62,6 +62,7 @@
   CSS["sparePiecesBottom"] = "spare-pieces-bottom-ae20f";
   CSS["sparePiecesTop"] = "spare-pieces-top-4028b";
   CSS["square"] = "square-55d63";
+  CSS["shade"] = "shade";
   CSS["white"] = "white-1e1d7";
 
   // ---------------------------------------------------------------------------
@@ -2060,6 +2061,12 @@
       $board.find("." + CSS["annotation"]).remove();
     };
 
+    widget.removeShadedSquares = function() {
+      $board.find("." + CSS["shade"]).each(function(index, elem) {
+        fadeOutAndRemove(elem, DEFAULT_ANNOTATION_FADE_OUT);
+      });
+    };
+
     widget.setOnDrop = function(onDropFunc) {
       config.onDrop = onDropFunc;
     };
@@ -2089,6 +2096,8 @@
     widget.allowReranking = function() {
       allowReranking = true;
     };
+
+    widget.clearMoveChoices = clearMoveChoices;
 
     // -------------------------------------------------------------------------
     // Browser Events

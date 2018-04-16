@@ -58,17 +58,23 @@ Model.prototype.submitForRankMode = function() {
   const self = this;
   Promise.mapSeries(movesArray, function(move) {
     return self.logic.evaluateMove(move);
-  }).then(function(movesWithScores) {
-    utils.sortMovesByScore(movesWithScores);
-    // animate
-    return self.showFeedbackForMoves(movesWithScores);
-  });
+  })
+    .then(function(movesWithScores) {
+      utils.sortMovesByScore(movesWithScores);
+      // animate
+      return self.showFeedbackForMoves(movesWithScores);
+    })
+    .then(function() {
+      // move the player's first-choice move
+      self.move(playerRankedMoves["1"]);
+      self.setMode(modes.OPPONENT);
+    });
 };
 
 Model.prototype.showFeedbackForMoves = function(moves) {
   const self = this;
 
-  Promise.mapSeries(moves, function(move, index, numMoves) {
+  return Promise.mapSeries(moves, function(move, index, numMoves) {
     const correctRank = numMoves - index;
     const emoji = utils.getScoreEmoji(move.score);
     return self.board.annotate(
@@ -228,6 +234,12 @@ Model.prototype.preventDragging = function() {
  */
 Model.prototype.turnOnRankMode = function() {
   const self = this;
+
+  // board logic
+  this.board.setAddGhost(true);
+  this.board.allowReranking();
+
+  // board event callbacks
   this.board.setOnDragStart(function(source, piece, position, orientation) {
     if (self.board.getNumMoveChoices() >= self.state.maxRankedMoves) {
       return false;
@@ -250,9 +262,6 @@ Model.prototype.turnOnRankMode = function() {
       return false;
     }
   });
-  this.board.removeAnnotations();
-  this.board.removeGhosts();
-  this.board.setAddGhost(true);
 
   this.board.setOnDrop(function(
     source,
@@ -271,15 +280,18 @@ Model.prototype.turnOnRankMode = function() {
 /**
  * Helper method for the update handlers.
  */
-Model.prototype.turnOffRankMode = function() {
-  this.board.setAddGhost(false);
-};
-
-/**
- * Helper method for the update handlers.
- */
 Model.prototype.resetBoard = function() {
+  // board logic
   this.board.setAddGhost(false);
+  this.board.freezeRankings();
+  this.board.clearMoveChoices();
+
+  // board UI
+  this.board.removeAnnotations();
+  this.board.removeShadedSquares();
+  this.board.removeGhosts();
+
+  // board event callbacks
   this.board.setOnDragStart(null);
   this.board.setOnSnapEnd(null);
   this.board.setOnDrop(null);
