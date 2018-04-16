@@ -20,7 +20,7 @@ var Logic = function Logic() {
 
 Logic.prototype.setStockfishLevel = function(level) {
   console.log(level);
-  assert(typeof level === "number" && level >= 1 && level <= 20);
+  assert(utils.isInteger(level) && level >= 1 && level <= 20);
   return this.engine.setOptionCommand("Skill Level", level);
 };
 
