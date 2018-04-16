@@ -2116,11 +2116,15 @@
       });
     }
 
+    function isAnnotation(target) {
+      return target.className.indexOf(CSS["annotation"]) !== -1;
+    }
+
     function clickHandler(evt) {
       // Allow user to click to remove annotations from the board
-      if (evt.target.className === CSS["annotation"]) {
+      if (isAnnotation(evt.target)) {
         fadeOutAndRemove(evt.target, DEFAULT_ANNOTATION_FADE_OUT);
-      } else if (evt.target.parentNode.className === CSS["annotation"]) {
+      } else if (isAnnotation(evt.target.parentNode)) {
         fadeOutAndRemove(evt.target.parentNode, DEFAULT_ANNOTATION_FADE_OUT);
       }
     }
