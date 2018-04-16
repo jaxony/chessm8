@@ -727,6 +727,7 @@
     var addGhost = false;
     var moveChoices = {};
     var numMoveChoices = 0;
+    var allowReranking = false;
 
     // -------------------------------------------------------------------------
     // Validation / Errors
@@ -2075,6 +2076,16 @@
       return numMoveChoices;
     };
 
+    // allows user to drag shaded squares for chess rank
+    widget.freezeRankings = function() {
+      allowReranking = false;
+    };
+
+    // stops user from drag shaded squares for chess rank
+    widget.allowReranking = function() {
+      allowReranking = true;
+    };
+
     // -------------------------------------------------------------------------
     // Browser Events
     // -------------------------------------------------------------------------
@@ -2101,10 +2112,12 @@
       }
 
       // chess rank: rearranging colors of squares for re-ranking
-      var $srcSquare = $("#" + squareElsIds[square]);
-      var shades = $srcSquare.find(".shade");
-      if (shades.length > 0) {
-        beginDraggingShade(shades[0]);
+      if (allowReranking) {
+        var $srcSquare = $("#" + squareElsIds[square]);
+        var shades = $srcSquare.find(".shade");
+        if (shades.length > 0) {
+          beginDraggingShade(shades[0]);
+        }
       }
       return;
     }
