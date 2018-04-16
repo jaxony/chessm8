@@ -49,12 +49,10 @@ Model.prototype.submitForRankMode = function() {
 
   this.board.freezeRankings();
   this.board.removeAnnotations();
+
   const playerRankedMoves = this.board.getRankedMoves();
-
   const movesArray = utils.convertObjectToArray(playerRankedMoves);
-  // console.log(movesArray);
 
-  // evaluate moves
   const self = this;
   Promise.mapSeries(movesArray, function(move) {
     return self.logic.evaluateMove(move);
