@@ -2012,10 +2012,13 @@
       CSS.shade = colorClass;
     };
 
+    // returns a Promise for when all animations bound to the
+    // annotation have finished
     widget.annotate = function(
       square,
       annotation,
       rank,
+      decoration,
       lifetime,
       textAnimationCallback
     ) {
@@ -2025,12 +2028,6 @@
         .hide()
         .appendTo("#" + squareElsIds[square])
         .fadeIn(DEFAULT_ANNOTATION_FADE_IN);
-
-      // After mounting element onto the DOM:
-      // play the animation for the text inside the <p> tag of the annotation
-      if (isFunction(textAnimationCallback)) {
-        textAnimationCallback.call($elem.find("p")[0]);
-      }
 
       // fadeOut and remove the DOM element after a delay
       if (isInteger(lifetime)) {
@@ -2042,6 +2039,16 @@
           DEFAULT_ANNOTATION_FADE_OUT
         );
       }
+
+      // After mounting element onto the DOM:
+      // play the animation for the text inside the <p> tag of the annotation
+      if (isFunction(textAnimationCallback)) {
+        var $p = $($elem.find("p")[0]);
+        textAnimationCallback.call($p);
+        return $p.promise();
+      }
+
+      return $elem.promise();
     };
 
     widget.removeAnnotations = function() {

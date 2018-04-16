@@ -5,6 +5,8 @@
 const modes = require("./modes.js");
 const exceptions = require("./exceptions.js");
 const utils = require("../utils");
+const uiConfig = require("../ui/config");
+
 const assert = require("assert");
 const Promise = require("bluebird");
 
@@ -43,6 +45,8 @@ Model.prototype.setPosition = function(position) {
 };
 
 Model.prototype.submitForRankMode = function() {
+  if (this.board.getNumMoveChoices === 0) return;
+
   this.board.removeAnnotations();
   const playerRankedMoves = this.board.getRankedMoves();
 
@@ -56,34 +60,43 @@ Model.prototype.submitForRankMode = function() {
   }).then(function(movesWithScores) {
     utils.sortMovesByScore(movesWithScores);
     // animate
-    self.showFeedbackForMoves(movesWithScores);
+    return self.showFeedbackForMoves(movesWithScores);
   });
 };
 
 Model.prototype.showFeedbackForMoves = function(moves) {
-  const numMoves = moves.length;
-  for (var i = 0; i < numMoves; i++) {
-    const move = moves[i];
-    const correctRank = numMoves - i;
-    console.log(typeof move.score);
-    const emoji = utils.getScoreEmoji(move.score);
-    this.board.annotate(move.to, emoji + " " + move.score, correctRank);
-  }
-};
+  const self = this;
 
-// setTimeout(board.annotate, 1000, 'g3', null, 1000, function () {
-//   $(this).prop('Counter', 0).animate({
-//     Counter: 100
-//   }, {
-//       duration: 1000,
-//       easing: 'swing',
-//       step: function (now) {
-//         var next = Math.ceil(now);
-//         var sign = next >= 0 ? "+" : "";
-//         $(this).text(sign + next);
-//       }
-//     });
-// });
+  Promise.mapSeries(moves, function(move, index, numMoves) {
+    const correctRank = numMoves - index;
+    const emoji = utils.getScoreEmoji(move.score);
+    return self.board.annotate(
+      move.to, // square to annotate
+      null, // no annotation
+      correctRank, // for border colour
+      emoji, // decoration
+      uiConfig.ANNOTATION_LIFETIME, // disappear after msecs
+      function() {
+        $(this)
+          .prop("Counter", 0)
+          .animate(
+            {
+              Counter: move.score
+            },
+            {
+              duration: Math.max(500, move.score * 10),
+              easing: "swing",
+              step: function(now) {
+                const next = Math.ceil(now);
+                const sign = next >= 0 ? "+" : "";
+                $(this).text(sign + next);
+              }
+            }
+          );
+      }
+    );
+  });
+};
 
 /**
  * Updates position in Model and UI, and Logic if required.
