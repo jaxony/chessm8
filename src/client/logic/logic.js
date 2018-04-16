@@ -4,10 +4,12 @@
 
 const Q = require("q");
 const Chess = require("chess.js");
-const utils = require("../utils.js");
-const endOfLine = require("os").EOL;
-const Engine = require("./engine");
 const assert = require("assert");
+
+const endOfLine = require("os").EOL;
+
+const Engine = require("./engine");
+const utils = require("../utils.js");
 const config = require("./config");
 
 var Logic = function Logic() {
