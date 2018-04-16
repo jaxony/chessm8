@@ -78,6 +78,7 @@ Model.prototype.submitForRankMode = function() {
 };
 
 Model.prototype.submitForAfterRankMode = function() {
+  clearTimeout(this.afterRankTimeout);
   this.setMode(modes.OPPONENT);
 };
 
@@ -144,7 +145,13 @@ Model.prototype.updateBoard = function() {
       this.updateBoardForOpponentMode();
       break;
     case modes.AFTER_RANK:
-      // do nothing - wait for user to do something in controller
+      // wait for user to do something in controller
+      // or wait for automatic switching to next mode
+      this.afterRankTimeout = setTimeout(
+        this.setMode.bind(this),
+        modelConfig.AFTER_RANK_WAIT_TIME,
+        modes.OPPONENT
+      );
       break;
     default:
       throw new Error(exceptions.INVALID_MODE);
