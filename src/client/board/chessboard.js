@@ -2064,6 +2064,10 @@
       return moveChoices;
     };
 
+    widget.getNumMoveChoices = function() {
+      return numMoveChoices;
+    };
+
     // -------------------------------------------------------------------------
     // Browser Events
     // -------------------------------------------------------------------------

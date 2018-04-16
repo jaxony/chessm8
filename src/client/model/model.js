@@ -20,7 +20,8 @@ var Model = function Model(board, logic) {
     abilities: {},
     mode: modes.NORMAL,
     position: this.logic.getPosition(),
-    player: "white"
+    player: "white",
+    maxRankedMoves: 3
   };
 };
 
@@ -214,11 +215,16 @@ Model.prototype.preventDragging = function() {
 Model.prototype.turnOnRankMode = function() {
   const self = this;
   this.board.setOnDragStart(function(source, piece, position, orientation) {
-    // only allow (correct) pieces to be dragged when game is still ongoing
+    if (self.board.getNumMoveChoices() >= self.state.maxRankedMoves) {
+      return false;
+    }
+
     if (self.logic.game.in_checkmate() === true) {
+      // only allow (correct) pieces to be dragged when game is still ongoing
       console.log("checkmate");
       return false;
     }
+
     if (self.logic.game.in_draw() === true) {
       console.log("draw");
       return false;
