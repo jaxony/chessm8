@@ -78,11 +78,26 @@ function getScoreEmoji(score) {
   return emoji;
 }
 
+/**
+ * Checks if the player's ranking of move choices is correct.
+ * @param {Array} sortedMoves Array of moves in order of ascending quality.
+ */
+function isCorrectRanking(sortedMoves) {
+  if (sortedMoves.length < 2) return false;
+  for (var i = 1; i < sortedMoves.length; i++) {
+    const worseMove = sortedMoves[i - 1];
+    const betterMove = sortedMoves[i];
+    if (worseMove.playerRank < betterMove.playerRank) return false;
+  }
+  return true;
+}
+
 module.exports = {
   isInteger: isInteger,
   chessjsToChessboard: chessjsToChessboard,
   parseCentipawnEvaluation: parseCentipawnEvaluation,
   convertObjectToArray: convertObjectToArray,
   sortMovesByScore: sortMovesByScore,
-  getScoreEmoji: getScoreEmoji
+  getScoreEmoji: getScoreEmoji,
+  isCorrectRanking: isCorrectRanking
 };

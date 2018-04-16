@@ -62,6 +62,11 @@ Model.prototype.submitForRankMode = function() {
   })
     .then(function(movesWithScores) {
       utils.sortMovesByScore(movesWithScores);
+      if (utils.isCorrectRanking(movesWithScores)) {
+        console.log("Correct ranking");
+      } else {
+        console.log("Bad ranking");
+      }
       // animate
       return self.showFeedbackForMoves(movesWithScores);
     })
