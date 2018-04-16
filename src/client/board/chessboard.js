@@ -37,6 +37,8 @@
   var DEFAULT_TRASH_SPEED = 100;
   var DEFAULT_ANNOTATION_FADE_IN = 300;
   var DEFAULT_ANNOTATION_FADE_OUT = 500;
+  var DEFAULT_GHOST_FADE_OUT = 500;
+  var DEFAULT_SHADE_FADE_OUT = 500;
 
   // use unique class names to prevent clashing with anything else on the page
   // and simplify selectors
@@ -2004,7 +2006,9 @@
 
     // remove ghost elements
     widget.removeGhosts = function() {
-      $board.find("." + CSS.ghost).remove();
+      $board.find("." + CSS.ghost).each(function(index, elem) {
+        fadeOutAndRemove(elem, DEFAULT_ANNOTATION_FADE_OUT);
+      });
     };
 
     // set color of square shading
