@@ -4,7 +4,7 @@ const assert = require("assert");
  * Checks if variable is an integer.
  */
 function isInteger(n) {
-  return typeof n === "numeric" && isFinite(n) && Math.floor(n) === n;
+  return typeof n === "number" && isFinite(n) && Math.floor(n) === n;
 }
 
 /**
