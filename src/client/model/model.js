@@ -6,6 +6,7 @@ const modes = require("./modes.js");
 const exceptions = require("./exceptions.js");
 const utils = require("../utils");
 const uiConfig = require("../ui/config");
+const modelConfig = require("./config");
 
 const assert = require("assert");
 const Promise = require("bluebird");
@@ -23,8 +24,10 @@ var Model = function Model(board, logic) {
     mode: modes.NORMAL,
     position: this.logic.getPosition(),
     player: "white",
-    maxRankedMoves: 3
+    maxRankedMoves: 3,
+    stockfishLevel: modelConfig.STOCKFISH_LEVEL
   };
+  this.logic.setStockfishLevel(this.state.stockfishLevel);
 };
 
 Model.prototype.getMode = function() {

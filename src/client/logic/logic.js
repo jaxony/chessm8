@@ -18,6 +18,12 @@ var Logic = function Logic() {
   this.engine.createWorker();
 };
 
+Logic.prototype.setStockfishLevel = function(level) {
+  console.log(level);
+  assert(typeof level === "number" && level >= 1 && level <= 20);
+  return this.engine.setOptionCommand("Skill Level", level);
+};
+
 Logic.prototype.getPosition = function() {
   return this.game.fen();
 };
