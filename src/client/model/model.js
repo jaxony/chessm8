@@ -65,8 +65,12 @@ Model.prototype.submitForRankMode = function() {
     .then(function() {
       // move the player's first-choice move
       self.move(playerRankedMoves["1"]);
-      self.setMode(modes.OPPONENT);
+      self.setMode(modes.AFTER_RANK);
     });
+};
+
+Model.prototype.submitForAfterRankMode = function() {
+  this.setMode(modes.OPPONENT);
 };
 
 Model.prototype.showFeedbackForMoves = function(moves) {
@@ -116,19 +120,23 @@ Model.prototype.move = function(move) {
  * Updates the chessboard UI component when the mode changes.
  */
 Model.prototype.updateBoard = function() {
-  this.resetBoard();
   switch (this.state.mode) {
     case modes.NORMAL:
-      console.log("back to normal mode");
+      this.resetBoard();
       this.updateBoardForNormalMode();
       break;
     case modes.GUESS:
       break;
     case modes.RANK:
+      this.resetBoard();
       this.updateBoardForRankMode();
       break;
     case modes.OPPONENT:
+      this.resetBoard();
       this.updateBoardForOpponentMode();
+      break;
+    case modes.AFTER_RANK:
+      // do nothing - wait for user to do something in controller
       break;
     default:
       throw new Error(exceptions.INVALID_MODE);
@@ -206,7 +214,7 @@ Model.prototype.updateBoardForOpponentMode = function() {
       console.log(self.logic.game.ascii());
     })
     .then(function() {
-      self.setMode(modes.NORMAL);
+      self.setMode(modes.RANK);
     });
 };
 

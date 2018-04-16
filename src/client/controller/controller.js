@@ -33,6 +33,9 @@ Controller.prototype.submitThisRound = function() {
     case modes.NORMAL:
       console.log("normal");
       break;
+    case modes.AFTER_RANK:
+      this.model.submitForAfterRankMode();
+      break;
     default:
       throw new Error(modelExceptions.INVALID_MODE);
   }
