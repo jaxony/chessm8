@@ -78,8 +78,6 @@ Model.prototype.submitForRankMode = function() {
       utils.sortMovesByScore(movesWithScores);
       if (utils.isCorrectRanking(movesWithScores)) {
         self.rewardPlayer();
-      } else {
-        console.log("Bad ranking");
       }
       // animate
       return self.showFeedbackForMoves(movesWithScores);
