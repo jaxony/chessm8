@@ -45,7 +45,7 @@ Model.prototype.setPosition = function(position) {
 };
 
 Model.prototype.submitForRankMode = function() {
-  if (this.board.getNumMoveChoices === 0) return;
+  if (this.board.getNumMoveChoices() === 0) return;
 
   this.board.freezeRankings();
   this.board.removeAnnotations();
