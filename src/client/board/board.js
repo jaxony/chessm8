@@ -7,9 +7,11 @@ const Board = require("./chessboard");
  * Creates UI of chessboard.
  */
 
-const board = Board("board", {
-  position: "start",
-  draggable: true
-});
+function createBoard(domId) {
+  return Board(domId, {
+    position: "start",
+    draggable: true
+  });
+}
 
-module.exports = board;
+module.exports = createBoard;

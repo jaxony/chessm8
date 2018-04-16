@@ -14,12 +14,14 @@ const Promise = require("bluebird");
 
 /**
  * Constructs a Model object.
- * @param {Object} board Chessboardjs User interface
+ * @param {Object} board Chessboardjs User interface with ranking state
  * @param {Object} logic Component containing game rules and chess engine
+ * @param {Object} view Pure UI component for rewards
  */
-var Model = function Model(board, logic) {
+var Model = function Model(board, logic, view) {
   this.board = board;
   this.logic = logic;
+  this.view = view;
   this.state = {
     rewards: {},
     mode: modes.NORMAL,
@@ -54,11 +56,12 @@ Model.prototype.chooseReward = function() {
 
 Model.prototype.rewardPlayer = function() {
   const reward = this.chooseReward();
-  if (this.rewards[reward]) {
-    this.rewards[reward] = 1;
+  if (this.state.rewards[reward]) {
+    this.state.rewards[reward] = 1;
   } else {
-    this.rewards[rewards] += 1;
+    this.state.rewards[reward] += 1;
   }
+  this.view.addReward(reward);
 };
 
 Model.prototype.submitForRankMode = function() {
@@ -71,18 +74,22 @@ Model.prototype.submitForRankMode = function() {
   const movesArray = utils.convertObjectToArray(playerRankedMoves);
 
   const self = this;
+  var sortedMoves;
   Promise.mapSeries(movesArray, function(move) {
     return self.logic.evaluateMove(move);
   })
     .then(function(movesWithScores) {
       utils.sortMovesByScore(movesWithScores);
-      if (utils.isCorrectRanking(movesWithScores)) {
-        self.rewardPlayer();
-      }
+      sortedMoves = movesWithScores;
+
       // animate
       return self.showFeedbackForMoves(movesWithScores);
     })
     .then(function() {
+      // if (utils.isCorrectRanking(sortedMoves)) {
+      if (true) {
+        self.rewardPlayer();
+      }
       // move the player's first-choice move
       self.move(playerRankedMoves["1"]);
       self.setMode(modes.AFTER_RANK);
@@ -157,13 +164,8 @@ Model.prototype.updateBoard = function() {
       this.updateBoardForOpponentMode();
       break;
     case modes.AFTER_RANK:
-      // wait for user to do something in controller
-      // or wait for automatic switching to next mode
-      this.afterRankTimeout = setTimeout(
-        this.setMode.bind(this),
-        modelConfig.AFTER_RANK_WAIT_TIME,
-        modes.OPPONENT
-      );
+      // do not reset board
+      this.updateBoardForAfterRankMode();
       break;
     default:
       throw new Error(exceptions.INVALID_MODE);
@@ -251,6 +253,21 @@ Model.prototype.updateBoardForOpponentMode = function() {
 Model.prototype.updateBoardForRankMode = function() {
   const self = this;
   this.turnOnRankMode();
+};
+
+/**
+ * Handles chessboard update when mode changes to AFTER_RANK.
+ */
+Model.prototype.updateBoardForAfterRankMode = function() {
+  this.preventDragging();
+
+  // wait for user to do something in controller
+  // or wait for automatic switching to next mode
+  this.afterRankTimeout = setTimeout(
+    this.setMode.bind(this),
+    modelConfig.AFTER_RANK_WAIT_TIME,
+    modes.OPPONENT
+  );
 };
 
 /**
