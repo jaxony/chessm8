@@ -1029,7 +1029,7 @@
       if (isInteger(rank)) {
         html += " choice-border-" + rank + '">';
       } else {
-        html += ">";
+        html += '">';
       }
 
       if (annotation) {
