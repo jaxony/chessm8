@@ -133,6 +133,8 @@ Model.prototype.submitForRankMode = function() {
       }
       // move the player's first-choice move
       self.choosePlayerMove(playerRankedMoves, sortedMoves);
+
+      // clean up
       self.clearActiveRewards();
       self.setMode(modes.AFTER_RANK);
     });
