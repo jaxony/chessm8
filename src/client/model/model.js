@@ -369,6 +369,7 @@ Model.prototype.turnOnRankMode = function() {
   // board event callbacks
   this.board.setOnDragStart(function(source, piece, position, orientation) {
     if (self.board.getNumMoveChoices() >= self.state.maxRankedMoves) {
+      self.board.annotate(source, "No more choices left!", null, null, 750);
       return false;
     }
 
