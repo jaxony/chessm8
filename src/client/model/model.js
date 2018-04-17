@@ -51,6 +51,10 @@ Model.prototype.setPosition = function(position) {
   this.board.position(position);
 };
 
+/**
+ * Chooses a reward for the player.
+ * @returns {Object} JavaScript Object containing `id` and `description` values.
+ */
 Model.prototype.chooseReward = function() {
   return REWARDS.SERVER_CHOOSES_BEST_MOVE;
 };
@@ -62,7 +66,7 @@ Model.prototype.rewardPlayer = function(reward) {
   } else {
     this.state.rewards[reward] = 1;
   }
-  this.view.addReward(reward);
+  this.view.addReward(reward.id, reward.description);
 };
 
 Model.prototype.useReward = function(rewardElement) {
@@ -93,7 +97,7 @@ Model.prototype.clearActiveRewards = function() {
 };
 
 Model.prototype.choosePlayerMove = function(playerRankedMoves, sortedMoves) {
-  if (this.state.activeRewards.includes(REWARDS.SERVER_CHOOSES_BEST_MOVE)) {
+  if (this.state.activeRewards.includes(REWARDS.SERVER_CHOOSES_BEST_MOVE.id)) {
     const moveObj = sortedMoves[sortedMoves.length - 1];
     var move = { from: moveObj.from, to: moveObj.to };
     console.log("Make this server move: ");

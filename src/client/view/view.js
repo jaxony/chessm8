@@ -7,9 +7,8 @@ var View = function View(rewardsPanelDomId) {
   this.$rewardsPanel = $("#" + rewardsPanelDomId);
 };
 
-View.prototype.addReward = function(rewardType) {
-  const newElement = createRewardElement(rewardType);
-  // const rewardsPanel = this.$rewardsPanel.find("#" + rewardType);
+View.prototype.addReward = function(rewardType, description) {
+  const newElement = createRewardElement(rewardType, description);
   newElement
     .hide()
     .appendTo(this.$rewardsPanel)
@@ -25,22 +24,28 @@ View.prototype.removeReward = function(rewardElement) {
 /**
  * Creates a draggable jQuery element for the reward.
  * @param {String} rewardType Type of reward.
+ * @param {String} tooltipMsg Tip for user on reward ability.
  */
-function createRewardElement(rewardType) {
+function createRewardElement(rewardType, tooltipMsg) {
   return $(
     '<div class="reward ' +
       rewardType +
       '" ' +
       'data="' +
       rewardType +
+      '" ' +
+      'title="' +
+      tooltipMsg +
       '">' +
       '<img src="../img/rewards/' +
       rewardType +
       '.png"/>' +
       "</div>"
-  ).draggable({
-    revert: "invalid"
-  });
+  )
+    .draggable({
+      revert: "invalid"
+    })
+    .tooltip();
 }
 
 module.exports = View;
