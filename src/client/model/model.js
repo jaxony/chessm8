@@ -72,22 +72,25 @@ Model.prototype.useReward = function(rewardElement) {
   if (!this.state.rewards[rewardType]) {
     throw new Error(exceptions.REWARD_REMOVAL_EXCEPTION);
   }
-  console.log("Model: Removing " + rewardType);
-
-  const activated = this.activateReward(rewardType);
-  this.state.rewards[rewardType] -= 1;
-  if (activated) {
-    this.view.removeReward(rewardElement);
+  if (this.canActivateReward(rewardType)) {
+    this.activateReward(rewardType, rewardElement);
   } else {
-    // buggy
-    // this.rewardPlayer(rewardType);
+    console.log("Can't activate award!");
   }
 };
 
-Model.prototype.activateReward = function(rewardType) {
-  if (this.state.activeRewards.includes(rewardType)) return false;
+Model.prototype.canActivateReward = function(rewardType) {
+  return !this.state.activeRewards.includes(rewardType);
+};
+
+Model.prototype.activateReward = function(rewardType, rewardElement) {
+  this.state.rewards[rewardType] -= 1;
   this.state.activeRewards.push(rewardType);
-  return true;
+  this.view.removeReward(rewardElement);
+};
+
+Model.prototype.clearActiveRewards = function() {
+  this.state.activeRewards = [];
 };
 
 Model.prototype.choosePlayerMove = function(playerRankedMoves, sortedMoves) {
@@ -104,6 +107,7 @@ Model.prototype.choosePlayerMove = function(playerRankedMoves, sortedMoves) {
 };
 
 Model.prototype.submitForRankMode = function() {
+  console.log(this.state.activeRewards);
   if (this.board.getNumMoveChoices() === 0) return;
 
   this.board.freezeRankings();
@@ -130,6 +134,7 @@ Model.prototype.submitForRankMode = function() {
       }
       // move the player's first-choice move
       self.choosePlayerMove(playerRankedMoves, sortedMoves);
+      self.clearActiveRewards();
       self.setMode(modes.AFTER_RANK);
     });
 };
