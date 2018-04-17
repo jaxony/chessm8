@@ -27,12 +27,23 @@ var Model = function Model(board, logic, view) {
     activeRewards: [],
     mode: modes.NORMAL,
     position: this.logic.getPosition(),
-    player: "white",
-    maxRankedMoves: 3,
+    player: modelConfig.PLAYER_SIDE,
+    maxRankedMoves: modelConfig.MAX_RANKED_MOVES,
     stockfishLevel: modelConfig.STOCKFISH_LEVEL
   };
   this.logic.setStockfishLevel(this.state.stockfishLevel);
+  this.rewardTypes = createRewardTypesArray(REWARDS);
 };
+
+function createRewardTypesArray(rewardsObj) {
+  const rewardTypes = new Array();
+  for (var rewardType in rewardsObj) {
+    if (rewardsObj.hasOwnProperty(rewardType)) {
+      rewardTypes.push(rewardsObj[rewardType].id);
+    }
+  }
+  return rewardTypes;
+}
 
 Model.prototype.getMode = function() {
   return this.state.mode;
@@ -56,39 +67,52 @@ Model.prototype.setPosition = function(position) {
  * @returns {Object} JavaScript Object containing `id` and `description` values.
  */
 Model.prototype.chooseReward = function() {
-  return REWARDS.SERVER_CHOOSES_BEST_MOVE;
+  const randomIndex = Math.floor(Math.random() * this.rewardTypes.length);
+  const rewardType = this.rewardTypes[randomIndex];
+  return REWARDS[rewardType];
 };
 
 Model.prototype.rewardPlayer = function(reward) {
   if (!reward) var reward = this.chooseReward();
-  if (this.state.rewards[reward]) {
-    this.state.rewards[reward] += 1;
+  if (this.state.rewards[reward.id]) {
+    this.state.rewards[reward.id] += 1;
   } else {
-    this.state.rewards[reward] = 1;
+    this.state.rewards[reward.id] = 1;
   }
   this.view.addReward(reward.id, reward.description);
 };
 
 Model.prototype.useReward = function(rewardElement) {
-  const rewardType = $(rewardElement).attr("data");
+  const rewardTypeId = $(rewardElement).attr("data");
   console.log(this.state.rewards);
-  if (!this.state.rewards[rewardType]) {
+  if (!this.state.rewards[rewardTypeId]) {
     throw new Error(exceptions.REWARD_REMOVAL_EXCEPTION);
   }
-  if (this.canActivateReward(rewardType)) {
-    this.activateReward(rewardType, rewardElement);
+  if (this.canActivateReward(rewardTypeId)) {
+    this.activateReward(rewardTypeId, rewardElement);
   } else {
     console.log("Can't activate award!");
   }
 };
 
-Model.prototype.canActivateReward = function(rewardType) {
-  return !this.state.activeRewards.includes(rewardType);
+Model.prototype.canActivateReward = function(rewardTypeId) {
+  return !this.state.activeRewards.includes(rewardTypeId);
 };
 
-Model.prototype.activateReward = function(rewardType, rewardElement) {
-  this.state.rewards[rewardType] -= 1;
-  this.state.activeRewards.push(rewardType);
+Model.prototype.activateReward = function(rewardTypeId, rewardElement) {
+  this.state.rewards[rewardTypeId] -= 1;
+  this.state.activeRewards.push(rewardTypeId);
+
+  switch (rewardTypeId) {
+    case REWARDS.MAX_FIVE_CHOICES.id:
+      this.state.maxRankedMoves = 5;
+      break;
+    case REWARDS.SERVER_CHOOSES_BEST_MOVE.id:
+      // do nothing: this reward is handled in Model#choosePlayerMove for now
+      break;
+    default:
+      throw new Error(exceptions.INVALID_REWARD);
+  }
   this.view.removeReward(rewardElement);
 };
 
@@ -139,9 +163,16 @@ Model.prototype.submitForRankMode = function() {
       self.choosePlayerMove(playerRankedMoves, sortedMoves);
 
       // clean up
-      self.clearActiveRewards();
+      self.resetStateAfterRankMode();
       self.setMode(modes.AFTER_RANK);
     });
+};
+
+Model.prototype.resetStateAfterRankMode = function() {
+  this.state.player = modelConfig.PLAYER_SIDE;
+  this.state.maxRankedMoves = modelConfig.MAX_RANKED_MOVES;
+  this.clearActiveRewards();
+  // this.stockfishLevel = modelConfig.STOCKFISH_LEVEL;
 };
 
 Model.prototype.submitForAfterRankMode = function() {

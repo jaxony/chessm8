@@ -1,4 +1,6 @@
 module.exports = {
   STOCKFISH_LEVEL: 5,
-  AFTER_RANK_WAIT_TIME: 5000
+  AFTER_RANK_WAIT_TIME: 5000,
+  MAX_RANKED_MOVES: 3,
+  PLAYER_SIDE: "white"
 };
