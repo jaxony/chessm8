@@ -57,11 +57,24 @@ Model.prototype.chooseReward = function() {
 Model.prototype.rewardPlayer = function() {
   const reward = this.chooseReward();
   if (this.state.rewards[reward]) {
-    this.state.rewards[reward] = 1;
-  } else {
     this.state.rewards[reward] += 1;
+  } else {
+    this.state.rewards[reward] = 1;
   }
   this.view.addReward(reward);
+  console.log(this.state.rewards);
+};
+
+Model.prototype.useReward = function(rewardElement) {
+  const rewardType = $(rewardElement).attr("data");
+  console.log(this.state.rewards);
+  if (!this.state.rewards[rewardType]) {
+    throw new Error(exceptions.REWARD_REMOVAL_EXCEPTION);
+  }
+  console.log("Model: Removing " + rewardType);
+
+  this.state.rewards[rewardType] -= 1;
+  this.view.removeReward(rewardElement);
 };
 
 Model.prototype.submitForRankMode = function() {
@@ -227,8 +240,6 @@ Model.prototype.updateBoardForNormalMode = function() {
  * Handles chessboard update when mode changes to OPPONENT.
  */
 Model.prototype.updateBoardForOpponentMode = function() {
-  // pick move: this.logic.engine
-  // this. logic.
   const self = this;
   // prevent any dragging when opponent is thinking
   this.preventDragging();

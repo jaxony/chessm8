@@ -16,10 +16,10 @@ var Main = function Main() {
   this.boardDomId = "board";
   this.rewardsPanelDomId = "rewardsPanel";
   this.board = createBoard(this.boardDomId);
-  this.view = new View(this.boardDomId, this.rewardsPanelDomId);
+  this.view = new View(this.rewardsPanelDomId);
   this.logic = new Logic();
   this.model = new Model(this.board, this.logic, this.view);
-  this.controller = new Controller(this.model);
+  this.controller = new Controller(this.model, this.boardDomId);
 };
 
 Main.prototype.start = function() {

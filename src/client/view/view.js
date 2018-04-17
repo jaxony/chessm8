@@ -1,21 +1,10 @@
 /**
  * Pure UI component.
+ * Only handles reward UI at the moment.
  */
 
-var View = function View(boardDomId, rewardsPanelDomId) {
+var View = function View(rewardsPanelDomId) {
   this.$rewardsPanel = $("#" + rewardsPanelDomId);
-  this.makeBoardDroppable(boardDomId);
-};
-
-View.prototype.makeBoardDroppable = function(boardDomId) {
-  $("#" + boardDomId).droppable({
-    drop: function(event, ui) {
-      const draggable = ui.draggable;
-      $(draggable[0]).fadeOut(250, function() {
-        $(this).remove();
-      });
-    }
-  });
 };
 
 View.prototype.addReward = function(rewardType) {
@@ -27,7 +16,11 @@ View.prototype.addReward = function(rewardType) {
     .fadeIn(250);
 };
 
-View.prototype.removeReward = function(rewardType) {};
+View.prototype.removeReward = function(rewardElement) {
+  $(rewardElement).fadeOut(250, function() {
+    $(this).remove();
+  });
+};
 
 /**
  * Creates a draggable jQuery element for the reward.
@@ -36,6 +29,9 @@ View.prototype.removeReward = function(rewardType) {};
 function createRewardElement(rewardType) {
   return $(
     '<div class="reward ' +
+      rewardType +
+      '" ' +
+      'data="' +
       rewardType +
       '">' +
       '<img src="../img/rewards/' +

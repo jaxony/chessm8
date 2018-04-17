@@ -5,9 +5,10 @@
 const modes = require("../model/modes.js");
 const modelExceptions = require("../model/exceptions");
 
-var Controller = function Controller(model) {
+var Controller = function Controller(model, boardDomId) {
   this.model = model;
   this.registerKeyListeners();
+  this.makeBoardDroppable(boardDomId);
 };
 
 Controller.prototype.registerKeyListeners = function() {
@@ -39,6 +40,18 @@ Controller.prototype.submitThisRound = function() {
     default:
       throw new Error(modelExceptions.INVALID_MODE);
   }
+};
+
+Controller.prototype.makeBoardDroppable = function(boardDomId) {
+  // TODO: this should be in the controller
+  const self = this;
+  $("#" + boardDomId).droppable({
+    drop: function(event, ui) {
+      const draggableList = ui.draggable;
+      const draggable = draggableList[0];
+      self.model.useReward(draggable);
+    }
+  });
 };
 
 module.exports = Controller;
