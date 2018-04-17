@@ -24,6 +24,7 @@ var Model = function Model(board, logic, view) {
   this.view = view;
   this.state = {
     rewards: {},
+    activeRewards: [],
     mode: modes.NORMAL,
     position: this.logic.getPosition(),
     player: "white",
@@ -54,8 +55,8 @@ Model.prototype.chooseReward = function() {
   return REWARDS.SERVER_CHOOSES_BEST_MOVE;
 };
 
-Model.prototype.rewardPlayer = function() {
-  const reward = this.chooseReward();
+Model.prototype.rewardPlayer = function(reward) {
+  if (!reward) var reward = this.chooseReward();
   if (this.state.rewards[reward]) {
     this.state.rewards[reward] += 1;
   } else {
@@ -73,8 +74,33 @@ Model.prototype.useReward = function(rewardElement) {
   }
   console.log("Model: Removing " + rewardType);
 
+  const activated = this.activateReward(rewardType);
   this.state.rewards[rewardType] -= 1;
-  this.view.removeReward(rewardElement);
+  if (activated) {
+    this.view.removeReward(rewardElement);
+  } else {
+    // buggy
+    // this.rewardPlayer(rewardType);
+  }
+};
+
+Model.prototype.activateReward = function(rewardType) {
+  if (this.state.activeRewards.includes(rewardType)) return false;
+  this.state.activeRewards.push(rewardType);
+  return true;
+};
+
+Model.prototype.choosePlayerMove = function(playerRankedMoves, sortedMoves) {
+  if (this.state.activeRewards.includes(REWARDS.SERVER_CHOOSES_BEST_MOVE)) {
+    const moveObj = sortedMoves[sortedMoves.length - 1];
+    var move = { from: moveObj.from, to: moveObj.to };
+    console.log("Make this server move: ");
+  } else {
+    var move = playerRankedMoves["1"];
+    // console.log("Make this player move: " + move);
+  }
+  console.log(move);
+  this.move(move);
 };
 
 Model.prototype.submitForRankMode = function() {
@@ -99,12 +125,11 @@ Model.prototype.submitForRankMode = function() {
       return self.showFeedbackForMoves(movesWithScores);
     })
     .then(function() {
-      // if (utils.isCorrectRanking(sortedMoves)) {
-      if (true) {
+      if (utils.isCorrectRanking(sortedMoves)) {
         self.rewardPlayer();
       }
       // move the player's first-choice move
-      self.move(playerRankedMoves["1"]);
+      self.choosePlayerMove(playerRankedMoves, sortedMoves);
       self.setMode(modes.AFTER_RANK);
     });
 };
