@@ -46,6 +46,12 @@ Controller.prototype.makeBoardDroppable = function(boardDomId) {
   // TODO: this should be in the controller
   const self = this;
   $("#" + boardDomId).droppable({
+    accept: function(dropElem) {
+      // allow drop only when reward is not active
+      const rewardType = $(dropElem[0]).attr("data");
+      console.log(rewardType);
+      return self.model.canActivateReward(rewardType);
+    },
     drop: function(event, ui) {
       const draggableList = ui.draggable;
       const draggable = draggableList[0];

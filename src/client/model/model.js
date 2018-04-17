@@ -63,7 +63,6 @@ Model.prototype.rewardPlayer = function(reward) {
     this.state.rewards[reward] = 1;
   }
   this.view.addReward(reward);
-  console.log(this.state.rewards);
 };
 
 Model.prototype.useReward = function(rewardElement) {

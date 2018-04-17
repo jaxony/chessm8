@@ -38,7 +38,9 @@ function createRewardElement(rewardType) {
       rewardType +
       '.png"/>' +
       "</div>"
-  ).draggable();
+  ).draggable({
+    revert: "invalid"
+  });
 }
 
 module.exports = View;
