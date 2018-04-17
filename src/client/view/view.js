@@ -45,7 +45,11 @@ function createRewardElement(rewardType, tooltipMsg) {
     .draggable({
       revert: "invalid"
     })
-    .tooltip();
+    .tooltip({
+      show: {
+        delay: 1000
+      }
+    });
 }
 
 module.exports = View;
