@@ -37,7 +37,7 @@ function createRewardElement(rewardType, tooltipMsg) {
       'title="' +
       tooltipMsg +
       '">' +
-      '<img src="../img/rewards/' +
+      '<img src="./img/rewards/' +
       rewardType +
       '.png"/>' +
       "</div>"
