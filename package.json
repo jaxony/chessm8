@@ -7,7 +7,7 @@
     "start": "node ./src/server/server.js",
     "build": "cd src/client && webpack --mode production",
     "deploy":
-      "yarn build && git subtree push —-prefix src/client/static origin gh-pages",
+      "yarn build && git subtree push --prefix=src/client/static origin gh-pages",
     "server:dev": "nodemon ./src/server/server.js",
     "client:dev": "cd src/client && webpack --mode development --watch"
   },
