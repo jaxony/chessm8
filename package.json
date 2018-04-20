@@ -4,6 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha './src/**/*.test.js'",
+    "build": "cd src/client && webpack --mode production",
+    "deploy":
+      "yarn build && git subtree push —-prefix src/client/static origin gh-pages",
     "server:dev": "nodemon ./src/server/server.js",
     "client:dev": "cd src/client && webpack --mode development --watch",
     "start": "node ./src/server/server.js"
