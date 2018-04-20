@@ -100,4 +100,4 @@ We use `mocha` as the testing framework, and `chai` for its `#expect` function.
 
 ## Application Architecture
 
-[!(Application Archiecture Diagram)](./docs/diagrams/architecture.png)
+![](./docs/diagrams/architecture.png)
