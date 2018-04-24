@@ -1731,6 +1731,20 @@
       return className[className.length - 1];
     }
 
+    function isDuplicateMoveChoice(srcSquare, destSquare) {
+      if (numMoveChoices === 0) return false;
+      if (!validSquare(srcSquare) || !validSquare(destSquare)) {
+        throw new Error("Invalid square.");
+      }
+      for (var i = 1; i <= numMoveChoices; i++) {
+        const move = moveChoices[i.toString()];
+        if (move.from === srcSquare && move.to === destSquare) {
+          return true;
+        }
+      }
+      return false;
+    }
+
     function stopDraggedShade(location) {
       // do nothing if user drops on a non-square
       if (!validSquare(location)) {
@@ -1780,6 +1794,9 @@
       }
       if (location === "offboard" && config.dropOffBoard === "trash") {
         action = "trash";
+      }
+      if (isDuplicateMoveChoice(draggedPieceSource, draggedPieceLocation)) {
+        action = "snapback";
       }
 
       // run their onDrop function, which can potentially change the drop action
