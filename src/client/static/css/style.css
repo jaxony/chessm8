@@ -35,23 +35,29 @@ html {
 .verticalContainer {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+}
+
+#stages span {
+  margin-right: 10px;
+}
+
+#textBar {
+  height: 150px;
 }
 
 #title {
-  margin-bottom: 5px;
   font-family: "Ubuntu";
-  font-size: 50px;
-}
-
-#titleContainer {
-  margin-top: 0px;
-  margin-bottom: 50px;
-}
-
-#subtitle {
-  margin-top: 0px;
-  margin-bottom: 5px;
   text-align: center;
+}
+
+#textBar {
+  font-size: 30px;
+}
+
+#stages span {
+  font-size: 50px;
+  font-weight: bold;
 }
 
 #board {

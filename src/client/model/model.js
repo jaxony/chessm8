@@ -31,9 +31,11 @@ var Model = function Model(board, logic, view) {
     player: modelConfig.PLAYER_SIDE,
     maxRankedMoves: modelConfig.MAX_RANKED_MOVES,
     stockfishLevel: modelConfig.STOCKFISH_LEVEL,
-    hasLocalStorage: false
+    hasLocalStorage: utils.isStorageAvailable("localStorage"),
+    isNewPlayer: false
   };
   this.logic.setStockfishLevel(this.state.stockfishLevel);
+  this.setPlayerType();
   this.initView();
   this.rewardTypes = createRewardTypesArray(REWARDS);
 };
@@ -73,14 +75,21 @@ function updateSigninTimestamp() {
  * Initialize the view at load.
  */
 Model.prototype.initView = function() {
-  this.state.hasLocalStorage = utils.isStorageAvailable("localStorage");
   if (!this.state.hasLocalStorage) return;
-  if (hasUserPlayedBefore()) {
-    console.log("User has played before!");
+  if (this.state.isNewPlayer) {
+    console.log("Model: User has not played before!");
+    this.view.initViewForNewPlayer();
   } else {
-    console.log("User has not played before!");
+    console.log("Model: User has played before!");
+    this.view.initViewForReturningPlayer();
   }
   updateSigninTimestamp();
+  localStorage.clear();
+};
+
+Model.prototype.setPlayerType = function() {
+  if (!this.state.hasLocalStorage) return;
+  this.state.isNewPlayer = !hasUserPlayedBefore();
 };
 
 Model.prototype.getMode = function() {
