@@ -7,6 +7,10 @@ var View = function View(rewardsPanelDomId) {
   this.$rewardsPanel = $("#" + rewardsPanelDomId);
 };
 
+View.prototype.setTitle = function(text) {};
+
+View.prototype.setSubtitle = function(text) {};
+
 View.prototype.addReward = function(rewardType, description) {
   const newElement = createRewardElement(rewardType, description);
   newElement

@@ -8,6 +8,7 @@ const utils = require("../utils");
 const viewConfig = require("../view/config");
 const modelConfig = require("./config");
 const REWARDS = require("./rewards");
+const STORAGE_KEYS = require("./storageKeys");
 
 const assert = require("assert");
 const Promise = require("bluebird");
@@ -29,9 +30,11 @@ var Model = function Model(board, logic, view) {
     position: this.logic.getPosition(),
     player: modelConfig.PLAYER_SIDE,
     maxRankedMoves: modelConfig.MAX_RANKED_MOVES,
-    stockfishLevel: modelConfig.STOCKFISH_LEVEL
+    stockfishLevel: modelConfig.STOCKFISH_LEVEL,
+    hasLocalStorage: false
   };
   this.logic.setStockfishLevel(this.state.stockfishLevel);
+  this.initView();
   this.rewardTypes = createRewardTypesArray(REWARDS);
 };
 
@@ -44,6 +47,41 @@ function createRewardTypesArray(rewardsObj) {
   }
   return rewardTypes;
 }
+
+/**
+ * Checks if user has played the app before by using localStorage.
+ * @returns boolean
+ */
+function hasUserPlayedBefore() {
+  return localStorage.getItem(STORAGE_KEYS.LAST_SIGN_IN_TIMESTAMP);
+}
+
+function updateSigninTimestamp() {
+  localStorage.setItem(
+    STORAGE_KEYS.LAST_SIGN_IN_TIMESTAMP,
+    new Date().toUTCString()
+  );
+  console.log(
+    "Model: " +
+      STORAGE_KEYS.LAST_SIGN_IN_TIMESTAMP +
+      " set to " +
+      localStorage.getItem(STORAGE_KEYS.LAST_SIGN_IN_TIMESTAMP)
+  );
+}
+
+/**
+ * Initialize the view at load.
+ */
+Model.prototype.initView = function() {
+  this.state.hasLocalStorage = utils.isStorageAvailable("localStorage");
+  if (!this.state.hasLocalStorage) return;
+  if (hasUserPlayedBefore()) {
+    console.log("User has played before!");
+  } else {
+    console.log("User has not played before!");
+  }
+  updateSigninTimestamp();
+};
 
 Model.prototype.getMode = function() {
   return this.state.mode;
