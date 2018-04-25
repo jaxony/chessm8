@@ -4,7 +4,7 @@
  */
 
 const config = require("./config");
-const stages = require("../model/stages");
+const STAGES = require("../model/stages");
 
 var View = function View(rewardsPanelDomId) {
   this.$rewardsPanel = $("#" + rewardsPanelDomId);
@@ -110,9 +110,15 @@ View.prototype.initViewForReturningPlayer = function() {
 
 function showStages() {
   var $el = $("#stages"),
-    text = "choose rank submit reward",
-    words = text.split(" "),
-    html = "";
+    text =
+      STAGES.CHOOSE.id +
+      " " +
+      STAGES.RANK.id +
+      " " +
+      STAGES.SUBMIT.id +
+      " " +
+      STAGES.REWARD.id;
+  (words = text.split(" ")), (html = "");
 
   for (var i = 0; i < words.length; i++) {
     html += '<span id="' + words[i] + '">' + words[i] + "</span>";
