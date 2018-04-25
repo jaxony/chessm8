@@ -35,7 +35,8 @@ var Model = function Model(board, logic, view) {
     maxRankedMoves: modelConfig.MAX_RANKED_MOVES,
     stockfishLevel: modelConfig.STOCKFISH_LEVEL,
     hasLocalStorage: utils.isStorageAvailable("localStorage"),
-    isNewPlayer: false
+    isNewPlayer: false,
+    isTutorial: false
   };
   this.logic.setStockfishLevel(this.state.stockfishLevel);
   this.setPlayerType();
@@ -82,19 +83,13 @@ Model.prototype.initView = function() {
   const self = this;
   if (this.state.isNewPlayer) {
     console.log("Model: User has not played before!");
-    this.view
-      .initViewForNewPlayer()
-      .then(function() {
-        return self.view.activateStage(self.state.stage, true);
-      })
-      .then(function() {
-        self.state.stage = STAGES.RANK;
-        return self.view.activateStage(self.state.stage, true);
-      });
+    this.view.initViewForNewPlayer().then(function() {
+      return self.view.activateStage(self.state.stage, self.state.isTutorial);
+    });
   } else {
     console.log("Model: User has played before!");
     this.view.initViewForReturningPlayer().then(function() {
-      // return self.view.activateStage("choose", true);
+      return self.view.activateStage(self.state.stage, self.state.isTutorial);
     });
   }
   updateSigninTimestamp();
@@ -104,6 +99,9 @@ Model.prototype.initView = function() {
 Model.prototype.setPlayerType = function() {
   if (!this.state.hasLocalStorage) return;
   this.state.isNewPlayer = !hasUserPlayedBefore();
+  if (this.state.isNewPlayer) {
+    this.state.isTutorial = true;
+  }
 };
 
 Model.prototype.getMode = function() {
@@ -462,8 +460,14 @@ Model.prototype.turnOnRankMode = function() {
   ) {
     const maybeMove = { from: source, to: target, promotion: "q" };
     if (!self.logic.isLegalMove(maybeMove)) return "snapback";
+    if (self.state.stage.id === STAGES.CHOOSE.id) self.activateRankStage();
     setTimeout(self.board.position, 250, oldPos);
   });
+};
+
+Model.prototype.activateRankStage = function() {
+  this.state.stage = STAGES.RANK;
+  this.view.activateStage(this.state.stage, this.state.isTutorial);
 };
 
 /**
