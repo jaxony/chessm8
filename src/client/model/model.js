@@ -36,7 +36,7 @@ var Model = function Model(board, logic, view) {
     stockfishLevel: modelConfig.STOCKFISH_LEVEL,
     hasLocalStorage: utils.isStorageAvailable("localStorage"),
     isNewPlayer: false,
-    isTutorial: false
+    isTutorial: false,
   };
   this.logic.setStockfishLevel(this.state.stockfishLevel);
   this.setPlayerType();
