@@ -79,9 +79,14 @@ Model.prototype.initView = function() {
   const self = this;
   if (this.state.isNewPlayer) {
     console.log("Model: User has not played before!");
-    this.view.initViewForNewPlayer().then(function() {
-      return self.view.activateStage("choose", true);
-    });
+    this.view
+      .initViewForNewPlayer()
+      .then(function() {
+        return self.view.activateStage("choose", true);
+      })
+      .then(function() {
+        return self.view.activateStage("rank", false);
+      });
   } else {
     console.log("Model: User has played before!");
     this.view.initViewForReturningPlayer().then(function() {

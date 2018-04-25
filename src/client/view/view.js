@@ -4,6 +4,7 @@
  */
 
 const config = require("./config");
+const stages = require("../model/stages");
 
 var View = function View(rewardsPanelDomId) {
   this.$rewardsPanel = $("#" + rewardsPanelDomId);
@@ -17,12 +18,50 @@ View.prototype.initViewForNewPlayer = function() {
 };
 
 /**
- * Activates a specific stage, for example "Choose"
- * @param {String} stage id of the DOM element
+ * Deactivates a specific stage, for example "choose"
+ * @param {String} stage Name of tbe stage, also the id of the DOM element
+ */
+function deactivateStage(stage) {
+  return $("#" + stage)
+    .animate(
+      {
+        opacity: 0.5
+      },
+      config.GLOW_STAGE_TIME
+    )
+    .promise()
+    .then(function() {
+      return $("#tutorialGif")
+        .css("opacity", 1)
+        .animate(
+          {
+            opacity: 0
+          },
+          config.GLOW_STAGE_TIME
+        )
+        .promise();
+    });
+}
+
+/**
+ * Activates a specific stage, for example "choose"
+ * @param {String} stage Name of the stage, also the id of the DOM element
  * @param {Boolean} showTutorial Whether to show tutorial GIF
  */
 View.prototype.activateStage = function(stage, showTutorial) {
-  console.log("here");
+  var promise;
+  if (this.lastActivatedStage) {
+    promise = deactivateStage(this.lastActivatedStage).then(
+      activateStagePromise.bind(null, stage, showTutorial)
+    );
+  } else {
+    promise = activateStagePromise(stage, showTutorial);
+  }
+  this.lastActivatedStage = stage;
+  return promise;
+};
+
+function activateStagePromise(stage, showTutorial) {
   const glowPromise = $("#" + stage)
     .animate(
       {
@@ -44,7 +83,7 @@ View.prototype.activateStage = function(stage, showTutorial) {
       .fadeIn(config.FADE_IN)
       .promise();
   });
-};
+}
 
 View.prototype.initViewForReturningPlayer = function() {
   setTitle("Welcome back :)");
