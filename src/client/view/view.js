@@ -84,16 +84,24 @@ function activateStagePromise(stage, showTutorial) {
           '" src="img/tutorial/' +
           stage.imgName +
           '"></img>' +
-          '<p class="tutorialMessage" id="message-' +
-          stage.id +
-          '">' +
-          stage.helpMessage +
-          "</p>"
+          buildHelpMessagesHTML(stage.helpMessages)
       )
       .hide()
       .fadeIn(config.FADE_IN)
       .promise();
   });
+}
+
+/**
+ * Creates the <p> HTML tags for tutorial help messages.
+ * @param {Array} helpMessages Array of help messages (Strings)
+ */
+function buildHelpMessagesHTML(helpMessages) {
+  var html = "";
+  for (var i = 0; i < helpMessages.length; i++) {
+    html += '<p class="tutorialMessage">' + helpMessages[i] + "</p>";
+  }
+  return html;
 }
 
 View.prototype.initViewForReturningPlayer = function() {
@@ -117,8 +125,8 @@ function showStages() {
     .each(function(i) {
       $(this)
         .css("opacity", 0.5)
-        .delay(i * 500)
-        .fadeIn(700);
+        .delay(i * 300)
+        .fadeIn(500);
     })
     .promise();
 }
