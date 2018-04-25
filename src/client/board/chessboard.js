@@ -1674,7 +1674,7 @@
       draggedPieceLocation = location;
     }
 
-    function getChoiceClassOfShadeOrPieceElement(domElement) {
+    function getChoiceClass(domElement) {
       var classes = domElement.className.split(/\s+/);
       for (var i = 0; i < classes.length; i++) {
         if (classes[i].indexOf("choice") !== -1) {
@@ -1760,14 +1760,26 @@
         return;
       }
 
-      var srcClass = getChoiceClassOfShadeOrPieceElement($draggedShade);
-      var destClass = getChoiceClassOfShadeOrPieceElement(shades[0]);
+      var srcClass = getChoiceClass($draggedShade);
+      // console.log($draggedShade);
+      var destClasses = [];
+
+      $(shades).each(function(index, elem) {
+        // console.log(elem);
+        var thisClass = getChoiceClass(elem);
+        if (thisClass !== srcClass) {
+          destClasses.push(thisClass);
+        }
+      });
 
       // do nothing if user drops on a shaded square of the same color
-      if (srcClass === destClass) {
+      if (destClasses.length === 0) {
         resetShadeDrag();
         return;
       }
+
+      var destClass = destClasses[0];
+      console.log(destClass, srcClass);
 
       // swap shade classes of the $draggedShade and the $destSquare
       swapShadeClasses(srcClass, destClass);
