@@ -82,8 +82,8 @@ function activateStagePromise(stage, showTutorial) {
         '<img class="tutorialGif" id="gif-' +
           stage.id +
           '" src="img/tutorial/' +
-          stage.id +
-          '.gif"></img>' +
+          stage.imgName +
+          '"></img>' +
           '<p class="tutorialMessage" id="message-' +
           stage.id +
           '">' +
