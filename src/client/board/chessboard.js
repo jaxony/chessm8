@@ -1784,6 +1784,12 @@
 
       // reset state
       resetShadeDrag();
+
+      // user defined callback function after shade is dropped successfully
+      if (isFunction(config.afterStopDraggedShade)) {
+        console.log("chessboard: asdadads");
+        config.afterStopDraggedShade();
+      }
     }
 
     function stopDraggedPiece(location) {
@@ -2094,6 +2100,10 @@
 
     widget.setOnSnapEnd = function(onSnapEnd) {
       config.onSnapEnd = onSnapEnd;
+    };
+
+    widget.setAfterStopDraggedShade = function(afterStopDraggedShade) {
+      config.afterStopDraggedShade = afterStopDraggedShade;
     };
 
     widget.getRankedMoves = function() {

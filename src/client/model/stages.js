@@ -8,6 +8,9 @@ module.exports = {
     helpMessage:
       '<strong>Drag and drop</strong> the shaded squares to re-rank from <span style="color:green;">best move</span> to <span style="color:orange;">2nd best</span> to <span style="color:red;">3rd best</span>'
   },
-  SUBMIT: 2,
+  SUBMIT: {
+    id: "submit",
+    helpMessage: "Press spacebar!"
+  },
   REWARD: 3
 };

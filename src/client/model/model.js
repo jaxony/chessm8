@@ -463,10 +463,19 @@ Model.prototype.turnOnRankMode = function() {
     if (self.state.stage.id === STAGES.CHOOSE.id) self.activateRankStage();
     setTimeout(self.board.position, 250, oldPos);
   });
+
+  this.board.setAfterStopDraggedShade(function() {
+    if (self.state.stage.id === STAGES.RANK.id) self.activateSubmitStage();
+  });
 };
 
 Model.prototype.activateRankStage = function() {
   this.state.stage = STAGES.RANK;
+  this.view.activateStage(this.state.stage, this.state.isTutorial);
+};
+
+Model.prototype.activateSubmitStage = function() {
+  this.state.stage = STAGES.SUBMIT;
   this.view.activateStage(this.state.stage, this.state.isTutorial);
 };
 
