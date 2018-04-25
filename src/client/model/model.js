@@ -2,11 +2,12 @@
  * Contains the application state.
  */
 
-const modes = require("./modes.js");
 const exceptions = require("./exceptions.js");
 const utils = require("../utils");
 const viewConfig = require("../view/config");
 const modelConfig = require("./config");
+
+const MODES = require("./modes.js");
 const REWARDS = require("./rewards");
 const STORAGE_KEYS = require("./storageKeys");
 
@@ -26,7 +27,8 @@ var Model = function Model(board, logic, view) {
   this.state = {
     rewards: {},
     activeRewards: [],
-    mode: modes.NORMAL,
+    mode: MODES.NORMAL,
+    stage: STAGES.CHOOSE,
     position: this.logic.getPosition(),
     player: modelConfig.PLAYER_SIDE,
     maxRankedMoves: modelConfig.MAX_RANKED_MOVES,
@@ -107,7 +109,7 @@ Model.prototype.getMode = function() {
 };
 
 Model.prototype.setMode = function(mode) {
-  if (!modes[mode]) {
+  if (!MODES[mode]) {
     throw new Error(exceptions.INVALID_MODE);
   }
   this.state.mode = mode;
@@ -221,7 +223,7 @@ Model.prototype.submitForRankMode = function() {
 
       // clean up
       self.resetStateAfterRankMode();
-      self.setMode(modes.AFTER_RANK);
+      self.setMode(MODES.AFTER_RANK);
     });
 };
 
@@ -234,7 +236,7 @@ Model.prototype.resetStateAfterRankMode = function() {
 
 Model.prototype.submitForAfterRankMode = function() {
   clearTimeout(this.afterRankTimeout);
-  this.setMode(modes.OPPONENT);
+  this.setMode(MODES.OPPONENT);
 };
 
 Model.prototype.showFeedbackForMoves = function(moves) {
@@ -285,21 +287,21 @@ Model.prototype.move = function(move) {
  */
 Model.prototype.updateBoard = function() {
   switch (this.state.mode) {
-    case modes.NORMAL:
+    case MODES.NORMAL:
       this.resetBoard();
       this.updateBoardForNormalMode();
       break;
-    case modes.GUESS:
+    case MODES.GUESS:
       break;
-    case modes.RANK:
+    case MODES.RANK:
       this.resetBoard();
       this.updateBoardForRankMode();
       break;
-    case modes.OPPONENT:
+    case MODES.OPPONENT:
       this.resetBoard();
       this.updateBoardForOpponentMode();
       break;
-    case modes.AFTER_RANK:
+    case MODES.AFTER_RANK:
       // do not reset board
       this.updateBoardForAfterRankMode();
       break;
@@ -355,7 +357,7 @@ Model.prototype.updateBoardForNormalMode = function() {
     console.log("Snap end normal");
     assert(move !== null);
     self.move(move);
-    self.setMode(modes.OPPONENT);
+    self.setMode(MODES.OPPONENT);
   });
 };
 
@@ -377,7 +379,7 @@ Model.prototype.updateBoardForOpponentMode = function() {
       console.log(self.logic.game.ascii());
     })
     .then(function() {
-      self.setMode(modes.RANK);
+      self.setMode(MODES.RANK);
     });
 };
 
@@ -400,7 +402,7 @@ Model.prototype.updateBoardForAfterRankMode = function() {
   this.afterRankTimeout = setTimeout(
     this.setMode.bind(this),
     modelConfig.AFTER_RANK_WAIT_TIME,
-    modes.OPPONENT
+    MODES.OPPONENT
   );
 };
 
