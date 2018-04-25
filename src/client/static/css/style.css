@@ -92,6 +92,7 @@ html {
 
 .reward {
   margin-bottom: 20px;
+  z-index: 9999;
 }
 
 .reward img {
