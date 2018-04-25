@@ -22,6 +22,7 @@ const Promise = require("bluebird");
  * @param {Object} view Pure UI component for rewards
  */
 var Model = function Model(board, logic, view) {
+  const self = this;
   this.board = board;
   this.logic = logic;
   this.view = view;
@@ -37,11 +38,16 @@ var Model = function Model(board, logic, view) {
     hasLocalStorage: utils.isStorageAvailable("localStorage"),
     isNewPlayer: false,
     isTutorial: false,
-    isSubmitting: false
+    isSubmitting: false,
+    canStartPlaying: false
   };
   this.logic.setStockfishLevel(this.state.stockfishLevel);
   this.setPlayerType();
-  this.initView();
+  this.initView().then(function() {
+    console.log("Can start playing");
+    self.state.canStartPlaying = true;
+    self.updateBoard();
+  });
   this.rewardTypes = createRewardTypesArray(REWARDS);
 };
 
@@ -80,21 +86,21 @@ function updateSigninTimestamp() {
  * Initialize the view at load.
  */
 Model.prototype.initView = function() {
+  this.view.hideLoader();
   if (!this.state.hasLocalStorage) return;
+  updateSigninTimestamp();
   const self = this;
   if (this.state.isNewPlayer) {
     console.log("Model: User has not played before!");
-    this.view.initViewForNewPlayer().then(function() {
+    return this.view.initViewForNewPlayer().then(function() {
       return self.view.activateStage(self.state.stage, self.state.isTutorial);
     });
   } else {
     console.log("Model: User has played before!");
-    this.view.initViewForReturningPlayer().then(function() {
+    return this.view.initViewForReturningPlayer().then(function() {
       return self.view.activateStage(self.state.stage, self.state.isTutorial);
     });
   }
-  updateSigninTimestamp();
-  localStorage.clear();
 };
 
 /**
@@ -140,7 +146,7 @@ Model.prototype.chooseReward = function() {
 };
 
 Model.prototype.rewardPlayer = function(reward) {
-  if (this.state.stage.id === STAGES.SUBMIT.id) this.activateRewardStage();
+  this.activateRewardStage();
   if (!reward) var reward = this.chooseReward();
   if (this.state.rewards[reward.id]) {
     this.state.rewards[reward.id] += 1;
@@ -206,6 +212,7 @@ Model.prototype.submitForRankMode = function() {
   this.state.isSubmitting = true;
   if (this.board.getNumMoveChoices() === 0) return;
 
+  this.view.showLoader();
   this.board.freezeRankings();
   this.board.removeAnnotations();
 
@@ -220,6 +227,7 @@ Model.prototype.submitForRankMode = function() {
     .then(function(movesWithScores) {
       utils.sortMovesByScore(movesWithScores);
       sortedMoves = movesWithScores;
+      self.view.hideLoader();
 
       // animate
       return self.showFeedbackForMoves(movesWithScores);
@@ -240,6 +248,7 @@ Model.prototype.submitForRankMode = function() {
 Model.prototype.turnOffTutorial = function() {
   if (!this.state.isTutorial) return;
   this.state.isTutorial = false;
+  this.view.disableTutorial();
 };
 
 Model.prototype.resetStateAfterRankMode = function() {
@@ -322,6 +331,7 @@ Model.prototype.updateBoard = function() {
       this.updateBoardForAfterRankMode();
       break;
     default:
+      console.log(this.state.mode);
       throw new Error(exceptions.INVALID_MODE);
   }
 };
@@ -442,29 +452,33 @@ Model.prototype.turnOnRankMode = function() {
   this.board.allowReranking();
 
   // board event callbacks
-  this.board.setOnDragStart(function(source, piece, position, orientation) {
-    if (self.board.getNumMoveChoices() >= self.state.maxRankedMoves) {
-      self.board.annotate(source, "No more choices left!", null, null, 750);
-      return false;
-    }
+  if (!this.state.canStartPlaying) {
+    this.preventDragging();
+  } else {
+    this.board.setOnDragStart(function(source, piece, position, orientation) {
+      if (self.board.getNumMoveChoices() >= self.state.maxRankedMoves) {
+        self.board.annotate(source, "No more choices left!", null, null, 750);
+        return false;
+      }
 
-    if (self.logic.game.in_checkmate() === true) {
-      // only allow (correct) pieces to be dragged when game is still ongoing
-      console.log("checkmate");
-      return false;
-    }
+      if (self.logic.game.in_checkmate() === true) {
+        // only allow (correct) pieces to be dragged when game is still ongoing
+        console.log("checkmate");
+        return false;
+      }
 
-    if (self.logic.game.in_draw() === true) {
-      console.log("draw");
-      return false;
-    }
+      if (self.logic.game.in_draw() === true) {
+        console.log("draw");
+        return false;
+      }
 
-    const wrongPieceRegex = self.state.player === "white" ? /^b/ : /^w/;
-    if (piece.search(wrongPieceRegex) !== -1) {
-      console.log("wrong piece color");
-      return false;
-    }
-  });
+      const wrongPieceRegex = self.state.player === "white" ? /^b/ : /^w/;
+      if (piece.search(wrongPieceRegex) !== -1) {
+        console.log("wrong piece color");
+        return false;
+      }
+    });
+  }
 
   this.board.setOnDrop(function(
     source,
@@ -476,12 +490,12 @@ Model.prototype.turnOnRankMode = function() {
   ) {
     const maybeMove = { from: source, to: target, promotion: "q" };
     if (!self.logic.isLegalMove(maybeMove)) return "snapback";
-    if (self.state.stage.id === STAGES.CHOOSE.id) self.activateRankStage();
+    self.activateRankStage();
     setTimeout(self.board.position, 250, oldPos);
   });
 
   this.board.setAfterStopDraggedShade(function() {
-    if (self.state.stage.id === STAGES.RANK.id) self.activateSubmitStage();
+    if (self.state.stage.id !== STAGES.SUBMIT.id) self.activateSubmitStage();
   });
 };
 

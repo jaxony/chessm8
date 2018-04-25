@@ -45,26 +45,34 @@ function deactivateStage(stage) {
 
 /**
  * Activates a specific stage, for example "choose"
- * @param {Object} stage DOM id of stage element and help message
+ * @param {Object} stage DOM id of stage element, help message and image name
  * @param {Boolean} showTutorial Whether to show tutorial GIF
  */
 View.prototype.activateStage = function(stage, showTutorial) {
   console.log("Activating " + stage.id);
+  if (this.lastActivatedStageId === stage.id) {
+    console.log("stage already activated : skip");
+    return;
+  }
+  const oldStageId = this.lastActivatedStageId;
+  this.lastActivatedStageId = stage.id;
   var promise;
-  if (this.lastActivatedStageId) {
-    promise = deactivateStage(this.lastActivatedStageId).then(
+  if (oldStageId) {
+    console.log("deactivating old stage: " + oldStageId);
+    promise = deactivateStage(oldStageId).then(
       activateStagePromise.bind(null, stage, showTutorial)
     );
   } else {
+    console.log("no need to deactivate");
     promise = activateStagePromise(stage, showTutorial);
   }
-  this.lastActivatedStageId = stage.id;
   return promise;
 };
 
 function activateStagePromise(stage, showTutorial) {
   console.log("activate stage promise for " + stage.id);
   const glowPromise = $("#" + stage.id)
+    .css("opacity", 0.5)
     .animate(
       {
         opacity: "1"
@@ -104,8 +112,21 @@ function buildHelpMessagesHTML(helpMessages) {
   return html;
 }
 
+View.prototype.disableTutorial = function() {
+  $("#tutorialContainer").fadeOut(config.FADE_OUT, function() {
+    $(this).remove();
+  });
+
+  $("#textBar")
+    .animate({ opacity: 0 })
+    .children()
+    .each(function(index, element) {
+      $(element).remove();
+    });
+};
+
 View.prototype.initViewForReturningPlayer = function() {
-  setTitle("Welcome back :)");
+  return setTitle("Welcome back :)");
 };
 
 function showStages() {
@@ -142,11 +163,25 @@ function setTitle(text) {
     .hide()
     .css("opacity", 0.5)
     .text(text)
+    .delay(500)
     .fadeIn(config.FADE_IN)
     .delay(1000)
-    .animate({ opacity: 0 })
+    .animate({ opacity: 0 }, config.FADE_OUT)
     .promise();
 }
+
+View.prototype.showLoader = function() {
+  $(".loader")
+    .css("opacity", 0)
+    .show()
+    .fadeTo(config.FADE_IN, 0.75);
+};
+
+View.prototype.hideLoader = function() {
+  $(".loader").fadeTo(1000, 0, "swing", function() {
+    $(this).hide();
+  });
+};
 
 View.prototype.addReward = function(rewardType, description) {
   const newElement = createRewardElement(rewardType, description);

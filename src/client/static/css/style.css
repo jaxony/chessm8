@@ -27,6 +27,7 @@ html {
 }
 
 .innerContainer {
+  position: relative;
   width: 800px;
   display: flex;
   justify-content: center;
@@ -78,7 +79,7 @@ html {
 }
 
 .tutorialMessage {
-  opacity: 0.5;
+  opacity: 0.75;
   text-align: center;
 }
 
@@ -102,4 +103,28 @@ html {
 
 .board-activated {
   animation: float 3s ease-in-out infinite;
+}
+
+.loader {
+  position: absolute;
+  z-index: 9998;
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #8a4baa; /* Purple */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  opacity: 0;
+  display: none;
+  top: 175px;
+  left: 285px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
