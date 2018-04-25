@@ -76,12 +76,17 @@ function updateSigninTimestamp() {
  */
 Model.prototype.initView = function() {
   if (!this.state.hasLocalStorage) return;
+  const self = this;
   if (this.state.isNewPlayer) {
     console.log("Model: User has not played before!");
-    this.view.initViewForNewPlayer();
+    this.view.initViewForNewPlayer().then(function() {
+      return self.view.activateStage("choose", true);
+    });
   } else {
     console.log("Model: User has played before!");
-    this.view.initViewForReturningPlayer();
+    this.view.initViewForReturningPlayer().then(function() {
+      // return self.view.activateStage("choose", true);
+    });
   }
   updateSigninTimestamp();
   localStorage.clear();

@@ -10,54 +10,68 @@ var View = function View(rewardsPanelDomId) {
 };
 
 View.prototype.initViewForNewPlayer = function() {
-  setTitle("Welcome to Chessm8")
-    .then(function() {
-      $("#title").hide();
-      var $el = $("#stages"),
-        text = "choose rank submit reward",
-        words = text.split(" "),
-        html = "";
+  return setTitle("Welcome to Chessm8").then(function() {
+    $("#title").hide();
+    return showStages();
+  });
+};
 
-      for (var i = 0; i < words.length; i++) {
-        html += '<span id="' + words[i] + '">' + words[i] + "</span>";
-      }
+/**
+ * Activates a specific stage, for example "Choose"
+ * @param {String} stage id of the DOM element
+ * @param {Boolean} showTutorial Whether to show tutorial GIF
+ */
+View.prototype.activateStage = function(stage, showTutorial) {
+  console.log("here");
+  const glowPromise = $("#" + stage)
+    .animate(
+      {
+        opacity: "1"
+      },
+      config.GLOW_STAGE_TIME
+    )
+    .promise();
 
-      return $el
-        .html(html)
-        .children()
-        .hide()
-        .each(function(i) {
-          $(this)
-            .css("opacity", 0.5)
-            .delay(i * 500)
-            .fadeIn(700);
-        })
-        .promise();
-    })
-    .then(function() {
-      console.log($("#choose"));
-      return $("#choose")
-        .animate(
-          {
-            opacity: "1"
-          },
-          1000,
-          function() {
-            console.log("done");
-          }
-        )
-        .promise();
-    })
-    .then(function() {
-      return $("#rank strong")
-        .animate({ opacity: 0.8 })
-        .promise();
-    });
+  if (!showTutorial) return glowPromise;
+
+  // show tutorial
+  return glowPromise.then(function() {
+    return $("#tutorialContainer")
+      .append(
+        '<img id="tutorialGif" src="img/tutorial/' + stage + '.gif"></img>'
+      )
+      .hide()
+      .fadeIn(config.FADE_IN)
+      .promise();
+  });
 };
 
 View.prototype.initViewForReturningPlayer = function() {
   setTitle("Welcome back :)");
 };
+
+function showStages() {
+  var $el = $("#stages"),
+    text = "choose rank submit reward",
+    words = text.split(" "),
+    html = "";
+
+  for (var i = 0; i < words.length; i++) {
+    html += '<span id="' + words[i] + '">' + words[i] + "</span>";
+  }
+
+  return $el
+    .html(html)
+    .children()
+    .hide()
+    .each(function(i) {
+      $(this)
+        .css("opacity", 0.5)
+        .delay(i * 500)
+        .fadeIn(700);
+    })
+    .promise();
+}
 
 function setTitle(text) {
   return $("#title")
@@ -68,13 +82,6 @@ function setTitle(text) {
     .delay(1000)
     .animate({ opacity: 0 })
     .promise();
-}
-
-function setSubtitle(text) {
-  $("#subtitle")
-    .hide()
-    .text(text)
-    .fadeIn(config.FADE_IN);
 }
 
 View.prototype.addReward = function(rewardType, description) {
