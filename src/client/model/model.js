@@ -37,6 +37,7 @@ var Model = function Model(board, logic, view) {
     hasLocalStorage: utils.isStorageAvailable("localStorage"),
     isNewPlayer: false,
     isTutorial: false,
+    isSubmitting: false
   };
   this.logic.setStockfishLevel(this.state.stockfishLevel);
   this.setPlayerType();
@@ -94,6 +95,13 @@ Model.prototype.initView = function() {
   }
   updateSigninTimestamp();
   localStorage.clear();
+};
+
+/**
+ * Checks if a move submission is in process.
+ */
+Model.prototype.isSubmitting = function() {
+  return this.state.isSubmitting;
 };
 
 Model.prototype.setPlayerType = function() {
@@ -193,7 +201,7 @@ Model.prototype.choosePlayerMove = function(playerRankedMoves, sortedMoves) {
 };
 
 Model.prototype.submitForRankMode = function() {
-  console.log(this.state.activeRewards);
+  this.state.isSubmitting = true;
   if (this.board.getNumMoveChoices() === 0) return;
 
   this.board.freezeRankings();
@@ -230,6 +238,7 @@ Model.prototype.submitForRankMode = function() {
 Model.prototype.resetStateAfterRankMode = function() {
   this.state.player = modelConfig.PLAYER_SIDE;
   this.state.maxRankedMoves = modelConfig.MAX_RANKED_MOVES;
+  this.state.isSubmitting = false;
   this.clearActiveRewards();
   // this.stockfishLevel = modelConfig.STOCKFISH_LEVEL;
 };

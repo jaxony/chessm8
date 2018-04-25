@@ -23,6 +23,7 @@ Controller.prototype.registerKeyListeners = function() {
 };
 
 Controller.prototype.submitThisRound = function() {
+  if (this.model.isSubmitting()) return;
   const mode = this.model.getMode();
   switch (mode) {
     case modes.RANK:
