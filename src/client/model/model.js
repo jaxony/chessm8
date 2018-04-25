@@ -8,6 +8,7 @@ const viewConfig = require("../view/config");
 const modelConfig = require("./config");
 
 const MODES = require("./modes.js");
+const STAGES = require("./stages");
 const REWARDS = require("./rewards");
 const STORAGE_KEYS = require("./storageKeys");
 
@@ -84,10 +85,11 @@ Model.prototype.initView = function() {
     this.view
       .initViewForNewPlayer()
       .then(function() {
-        return self.view.activateStage("choose", true);
+        return self.view.activateStage(self.state.stage, true);
       })
       .then(function() {
-        return self.view.activateStage("rank", false);
+        self.state.stage = STAGES.RANK;
+        return self.view.activateStage(self.state.stage, true);
       });
   } else {
     console.log("Model: User has played before!");

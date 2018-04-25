@@ -1,11 +1,13 @@
 module.exports = {
-  choose: {
+  CHOOSE: {
+    id: "choose",
     helpMessage: "Choose some moves that you think are good"
   },
-  rank: {
+  RANK: {
+    id: "rank",
     helpMessage:
-      "💚 = best move, 💛 = 2nd best, ❤️ = 3rd best. Drag and drop the shaded squares to re-rank."
+      '<strong>Drag and drop</strong> the shaded squares to re-rank from <span style="color:green;">best move</span> to <span style="color:orange;">2nd best</span> to <span style="color:red;">3rd best</span>'
   },
-  submit: 2,
-  reward: 3
+  SUBMIT: 2,
+  REWARD: 3
 };

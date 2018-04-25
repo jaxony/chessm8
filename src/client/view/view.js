@@ -31,38 +31,40 @@ function deactivateStage(stage) {
     )
     .promise()
     .then(function() {
-      return $("#tutorialGif")
-        .css("opacity", 1)
-        .animate(
-          {
-            opacity: 0
-          },
-          config.GLOW_STAGE_TIME
-        )
+      return $("#tutorialContainer")
+        .fadeOut(config.GLOW_STAGE_TIME, function() {
+          $(this)
+            .children()
+            .each(function(index, element) {
+              $(element).remove();
+            });
+        })
         .promise();
     });
 }
 
 /**
  * Activates a specific stage, for example "choose"
- * @param {String} stage Name of the stage, also the id of the DOM element
+ * @param {Object} stage DOM id of stage element and help message
  * @param {Boolean} showTutorial Whether to show tutorial GIF
  */
 View.prototype.activateStage = function(stage, showTutorial) {
+  console.log("Activating " + stage.id);
   var promise;
-  if (this.lastActivatedStage) {
-    promise = deactivateStage(this.lastActivatedStage).then(
+  if (this.lastActivatedStageId) {
+    promise = deactivateStage(this.lastActivatedStageId).then(
       activateStagePromise.bind(null, stage, showTutorial)
     );
   } else {
     promise = activateStagePromise(stage, showTutorial);
   }
-  this.lastActivatedStage = stage;
+  this.lastActivatedStageId = stage.id;
   return promise;
 };
 
 function activateStagePromise(stage, showTutorial) {
-  const glowPromise = $("#" + stage)
+  console.log("activate stage promise for " + stage.id);
+  const glowPromise = $("#" + stage.id)
     .animate(
       {
         opacity: "1"
@@ -77,7 +79,16 @@ function activateStagePromise(stage, showTutorial) {
   return glowPromise.then(function() {
     return $("#tutorialContainer")
       .append(
-        '<img id="tutorialGif" src="img/tutorial/' + stage + '.gif"></img>'
+        '<img class="tutorialGif" id="gif-' +
+          stage.id +
+          '" src="img/tutorial/' +
+          stage.id +
+          '.gif"></img>' +
+          '<p class="tutorialMessage" id="message-' +
+          stage.id +
+          '">' +
+          stage.helpMessage +
+          "</p>"
       )
       .hide()
       .fadeIn(config.FADE_IN)

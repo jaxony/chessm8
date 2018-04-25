@@ -64,13 +64,22 @@ html {
 
 #tutorialContainer {
   position: absolute;
+  width: 300px;
+  height: auto;
   top: 160px;
   left: 100px;
 }
 
-#tutorialGif {
+.tutorialGif {
   width: 300px;
   height: auto;
+  opacity: 0.75;
+  border-radius: 15px;
+}
+
+.tutorialMessage {
+  opacity: 0.5;
+  text-align: center;
 }
 
 #rewardsPanel {
