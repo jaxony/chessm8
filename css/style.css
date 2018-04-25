@@ -38,10 +38,6 @@ html {
   justify-content: center;
 }
 
-#stages span {
-  margin-right: 10px;
-}
-
 #textBar {
   height: 150px;
 }
@@ -56,12 +52,25 @@ html {
 }
 
 #stages span {
-  font-size: 50px;
+  font-size: 40px;
   font-weight: bold;
+  margin-right: 15px;
+  margin-left: 15px;
 }
 
 #board {
   width: 500px;
+}
+
+#tutorialContainer {
+  position: absolute;
+  top: 160px;
+  left: 100px;
+}
+
+#tutorialGif {
+  width: 300px;
+  height: auto;
 }
 
 #rewardsPanel {
