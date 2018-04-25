@@ -151,7 +151,7 @@ function showStages() {
     .hide()
     .each(function(i) {
       $(this)
-        .css("opacity", 0.5)
+        .css("opacity", 0.25)
         .delay(i * 300)
         .fadeIn(500);
     })
