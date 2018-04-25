@@ -57,6 +57,9 @@ Controller.prototype.makeBoardDroppable = function(boardDomId) {
       const draggableList = ui.draggable;
       const draggable = draggableList[0];
       self.model.useReward(draggable);
+    },
+    classes: {
+      "ui-droppable-active": "board-activated"
     }
   });
 };

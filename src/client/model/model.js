@@ -140,6 +140,7 @@ Model.prototype.chooseReward = function() {
 };
 
 Model.prototype.rewardPlayer = function(reward) {
+  if (this.state.stage.id === STAGES.SUBMIT.id) this.activateRewardStage();
   if (!reward) var reward = this.chooseReward();
   if (this.state.rewards[reward.id]) {
     this.state.rewards[reward.id] += 1;
@@ -160,6 +161,7 @@ Model.prototype.useReward = function(rewardElement) {
   } else {
     console.log("Can't activate award!");
   }
+  this.turnOffTutorial();
 };
 
 Model.prototype.canActivateReward = function(rewardTypeId) {
@@ -223,7 +225,7 @@ Model.prototype.submitForRankMode = function() {
       return self.showFeedbackForMoves(movesWithScores);
     })
     .then(function() {
-      if (utils.isCorrectRanking(sortedMoves)) {
+      if (utils.isCorrectRanking(sortedMoves) || self.state.isTutorial) {
         self.rewardPlayer();
       }
       // move the player's first-choice move
@@ -233,6 +235,11 @@ Model.prototype.submitForRankMode = function() {
       self.resetStateAfterRankMode();
       self.setMode(MODES.AFTER_RANK);
     });
+};
+
+Model.prototype.turnOffTutorial = function() {
+  if (!this.state.isTutorial) return;
+  this.state.isTutorial = false;
 };
 
 Model.prototype.resetStateAfterRankMode = function() {
@@ -485,6 +492,11 @@ Model.prototype.activateRankStage = function() {
 
 Model.prototype.activateSubmitStage = function() {
   this.state.stage = STAGES.SUBMIT;
+  this.view.activateStage(this.state.stage, this.state.isTutorial);
+};
+
+Model.prototype.activateRewardStage = function() {
+  this.state.stage = STAGES.REWARD;
   this.view.activateStage(this.state.stage, this.state.isTutorial);
 };
 
