@@ -2,6 +2,33 @@
 
 ![](./docs/screenshots/chessm8-screenshot.png)
 
+## Table of Contents
+
+* [What is this project?](#what-is-this-project)
+  * [Goal](#goal)
+    * [Educational goals](#educational-goals)
+  * [What have we done so far?](#what-have-we-done-so-far)
+    * [Educational: Ranking chess moves](#educational-ranking-chess-moves)
+    * [Fun: Rewards](#fun-rewards)
+* [Overview of the technology](#overview-of-the-technology)
+* [How to play](#how-to-play)
+* [Getting Started](#getting-started)
+  * [Set up your Node.js development environment](#set-up-your-nodejs-development-environment)
+  * [Get the code](#get-the-code)
+  * [Install the packages](#install-the-packages)
+  * [Start the server](#start-the-server)
+  * [Open your browser](#open-your-browser)
+* [Workflow for developing](#workflow-for-developing)
+  * [Build tools](#build-tools)
+  * [Tests](#tests)
+* [Application Architecture](#application-architecture)
+  * [App Component](#app-component)
+  * [Board Component](#board-component)
+  * [Controller Component](#controller-component)
+  * [View Component](#view-component)
+  * [Model Component](#model-component)
+  * [Logic Component](#logic-component)
+
 ## What is this project?
 
 Chessm8 (pronouned "chessmate") is about chess, teaching and technology. We want to make an innovative web application that helps beginners and intermediates learn chess more effectively.
