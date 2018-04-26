@@ -41,7 +41,7 @@ To motivate players to place effort into explicitly ranking moves, the game rewa
 
 ## How to play
 
-Go to the <website>.
+The game is hosted at [https://jaxony.github.io/chessm8](https://jaxony.github.io/chessm8).
 
 ## Getting Started
 
