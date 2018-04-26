@@ -28,6 +28,7 @@
   * [View Component](#view-component)
   * [Model Component](#model-component)
   * [Logic Component](#logic-component)
+* [How you can contribute](#how-you-can-contribute)
 
 ## What is this project?
 
@@ -171,7 +172,7 @@ The `Logic` component handles the verification of the legality of moves and the 
 * `Chess.js` is the library used to handle the chess rules.
 * `Stockfish.js` is a JavaScript port of the C++ Stockfish chess engine. No servers are required for running the chess engine as it all runs in the user's own browser. This is a cheap and scalable solution. Users have to download a 1 MB file, which isn't too much considering the amount of data that people stream these days.
 
-# How you can contribute
+## How you can contribute
 
 * **Chess players** and **educators** to help on the pedagogical side of things.
 * **Software developers and CS students** to help develop the software, new features, and software testing.
