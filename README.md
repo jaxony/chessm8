@@ -12,7 +12,7 @@
     * [Fun: Rewards](#fun-rewards)
 * [Overview of the technology](#overview-of-the-technology)
 * [How to play](#how-to-play)
-* [Getting Started](#getting-started)
+* [Getting Started for the Developer](#getting-started-for-the-developer)
   * [Set up your Node.js development environment](#set-up-your-nodejs-development-environment)
   * [Get the code](#get-the-code)
   * [Install the packages](#install-the-packages)
@@ -72,7 +72,7 @@ To motivate players to place effort into explicitly ranking moves, the game rewa
 
 The game is hosted at [https://jaxony.github.io/chessm8](https://jaxony.github.io/chessm8).
 
-## Getting Started
+## Getting Started for the Developer
 
 ### Set up your Node.js development environment
 
