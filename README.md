@@ -101,3 +101,41 @@ We use `mocha` as the testing framework, and `chai` for its `#expect` function.
 ## Application Architecture
 
 ![](./docs/diagrams/architecture.png)
+
+### App Component
+
+This is the entry point of the application. Well, technically it all starts in the `src/client/index.js` file, but the interesting stuff begins in the `App` component, where all the other components are created and connected together.
+
+### Board Component
+
+The `Board` is just an instance of a modified `chessboardjs` object.
+
+`chessboardjs` handles the following tasks:
+
+* Movement, animation and appearance of chess pieces
+* Chessboard appearance (squares, square size, etc.)
+* Maintains the state of chess move ranking
+
+### Controller Component
+
+The `Controller` **registers listeners** for keyboard input, which is used to submit moves in 'Rank' mode. The chessboard is also made `droppable` so that rewards can be activated when the user drags them onto the board.
+
+### View Component
+
+The `View` controls what the user sees by directly manipulating the HTML and CSS through the `jQuery` DOM manipulation library.
+
+### Model Component
+
+The `Model` is the most substantial part of the application. Its responsibilities include:
+
+* Maintains the state and data of the application
+* Reacts to the user's actions captured and passed on by the `Controller`, changing the data as a result
+* Calls the `Logic` component's API to handle heavy logic
+* In response to data changes, the `Model` updates what the user sees on the page by accessing the `View` component's API
+
+### Logic Component
+
+The `Logic` component handles the verification of the legality of moves and the evaluation of moves using a chess engine, Stockfish.
+
+* `Chess.js` is the library used to handle the chess rules.
+* `Stockfish.js` is a JavaScript port of the C++ Stockfish chess engine. No servers are required for running the chess engine as it all runs in the user's own browser. This is a cheap and scalable solution. Users have to download a 1 MB file, which isn't too much considering the amount of data that people stream these days.
