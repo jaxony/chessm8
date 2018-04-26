@@ -1,5 +1,7 @@
 # Chessm8
 
+![](./docs/screenshots/chessm8-screenshot.png)
+
 ## What is this project?
 
 Chessm8 (pronouned "chessmate") is about chess, teaching and technology. We want to make an innovative web application that helps beginners and intermediates learn chess more effectively.
