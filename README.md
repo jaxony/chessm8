@@ -12,17 +12,19 @@ The app needs to be simple, fun and educational.
 * **Fun**: Players will want to play this instead of normal chess (not all the time, obviously)
 * **Educational**: Players will learn something that they wouldn't otherwise learn from other chess applications
 
+#### Educational goals
+
+We plan to address three types of thinking that are important to chess.
+
+* Thinking broadly
+* Thinking deeply
+* Thinking from your opponent's view
+
 ### What have we done so far?
 
 #### Educational: Ranking chess moves
 
-We believe that success in chess requires several types of thinking. One of these is being able to **think broadly**. To help players with this process of enumerating their moves choices and evaluating them, players are asked to rank their moves from best to worst. Feedback is provided using a chess engine.
-
-Here are the three types of thinking important to chess:
-
-* Thinking broadly
-* Thinking deeply
-* Thinking as the opponent
+To help players with _thinking broadly_, we ask them to try multiple moves and rank their choices from best to worst. Feedback on the correctness of their ranking is provided using a chess engine.
 
 #### Fun: Rewards
 
